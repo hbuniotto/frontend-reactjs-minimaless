@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.2.1",
-    "@material-ui/icons": "^4.2.1",
+    "@material-ui/icons": "^4.9.1",
     "@material-ui/styles": "^4.2.1",
     "chart.js": "^2.8.0",
     "clsx": "^1.0.4",
@@ -42,7 +42,9 @@
     "react-perfect-scrollbar": "^1.5.3",
     "react-router-dom": "^5.0.1",
     "react-scripts": "^3.0.1",
+    "react-slick": "^0.25.2",
     "recompose": "^0.30.0",
+    "slick-carousel": "^1.8.1",
     "underscore": "^1.9.1",
     "uuid": "^3.3.2",
     "validate.js": "^0.13.1"

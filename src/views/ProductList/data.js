@@ -6,7 +6,7 @@ export default [
     title: 'Box',
     description:
       'Dropbox is a file hosting service that offers cloud storage, file synchronization, a personal cloud.',
-    imageUrl: '/images/products/product_1.png',
+    imageUrl: '/images/avatars/avatar_1.png',
     totalDownloads: '594',
     updatedAt: '27/03/2019'
   },
@@ -15,7 +15,7 @@ export default [
     title: 'Medium Corporation',
     description:
       'Medium is an online publishing platform developed by Evan Williams, and launched in August 2012.',
-    imageUrl: '/images/products/product_2.png',
+    imageUrl: '/images/avatars/avatar_2.png',
     totalDownloads: '625',
     createdAt: '31/03/2019'
   },
