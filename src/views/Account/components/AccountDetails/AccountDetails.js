@@ -7,13 +7,13 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import {
   Card,
-  CardHeader,
   CardContent,
   CardActions,
   Divider,
   Grid,
   Button,
-  TextField
+  TextField,
+  Typography
 } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
@@ -26,12 +26,8 @@ const AccountDetails = props => {
   const classes = useStyles();
 
   const [values, setValues] = useState({ // will come from user model
-    firstName: 'Humberto',
-    lastName: 'Buniotto',
-    email: 'humberto@email.com',
-    phone: '(123) 456-7890',
-    state: 'Miami Beach',
-    country: 'USA'
+    demo1: '',
+    demo2: ''
   });
 
   const handleChange = event => {
@@ -40,6 +36,15 @@ const AccountDetails = props => {
       [event.target.name]: event.target.value
     });
   };
+
+  const handleUpdate = e => {
+    e.preventDefault();
+    const paymentInfo = {
+      demo1: values.demo1,
+      demo2: values.demo2,
+    }
+    console.log(paymentInfo)
+  }
 
   const states = [ // this will come from the backend.
     {
@@ -63,12 +68,21 @@ const AccountDetails = props => {
     >
       <form
         autoComplete="off"
-        noValidate
+        // noValidate
+        onSubmit={handleUpdate}
       >
-        <CardHeader
-          subheader="The information can be edited"
-          title="Profile"
-        />
+            <CardContent>
+        <div className={classes.details}>
+          <div>
+            <Typography
+              gutterBottom
+              variant="h2"
+            >
+              Payment Information
+            </Typography>    
+          </div>
+        </div>
+      </CardContent>
         <Divider />
         <CardContent>
           <Grid
@@ -77,122 +91,58 @@ const AccountDetails = props => {
           >
             <Grid
               item
-              md={6}
+              md={12}
               xs={12}
             >
               <TextField
                 fullWidth
-                label="First name"
+                label="Demo1"
                 margin="dense"
-                name="firstName"
+                name="demo1"
                 onChange={handleChange}
                 required
-                value={values.firstName}
+                // value={values.firstName}
                 variant="outlined"
               />
             </Grid>
             <Grid
               item
-              md={6}
+              md={12}
               xs={12}
             >
               <TextField
                 fullWidth
-                label="Last name"
+                label="Demo2"
                 margin="dense"
-                name="lastName"
+                name="demo2"
                 onChange={handleChange}
                 required
-                value={values.lastName}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Email Address"
-                helperText="yourname@email.com"
-                margin="dense"
-                name="email"
-                onChange={handleChange}
-                required
-                value={values.email}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Phone Number"
-                margin="dense"
-                name="phone"
-                onChange={handleChange}
-                type="number"
-                value={values.phone}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Select State"
-                margin="dense"
-                name="state"
-                onChange={handleChange}
-                required
-                select
-                // eslint-disable-next-line react/jsx-sort-props
-                SelectProps={{ native: true }}
-                value={values.state}
-                variant="outlined"
-              >
-                {states.map(option => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Country"
-                margin="dense"
-                name="country"
-                onChange={handleChange}
-                required
-                value={values.country}
+                // value={values.lastName}
                 variant="outlined"
               />
             </Grid>
           </Grid>
         </CardContent>
         <Divider />
+        <CardContent>
+        <Typography
+          className={classes.locationText}
+          color="textSecondary"
+          variant="body1"
+        >
+          Your payment information will only be shared with the renter of your items once the transaction has been confirmed.
+        </Typography>
+        </CardContent>
+        <Divider />
         <CardActions>
           <Button
+            className={classes.uploadButton}
             color="primary"
-            variant="contained"
+            variant="text"
+            type='submit'
+            onSubmit={handleUpdate}
           >
-            Save details
+            Update
           </Button>
         </CardActions>
       </form>

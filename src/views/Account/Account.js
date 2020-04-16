@@ -40,13 +40,13 @@ const Account = () => {
         </Grid>
         <Grid
           item
-          lg={6}
-          md={6}
-          xl={6}
+          lg={12}
+          md={12}
+          xl={12}
           xs={12}
         >
           <MyListings />
-      </Grid>
+        </Grid>
       </Grid>
     </div>
   );

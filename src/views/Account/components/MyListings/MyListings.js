@@ -1,72 +1,182 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Radio from '@material-ui/core/Radio';
-import Paper from '@material-ui/core/Paper';
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
+import { makeStyles } from '@material-ui/styles';
+import {
+  Card,
+  CardActions,
+  CardContent,
+  Typography,
+  Divider,
+  Button,
+  Grid
+} from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
+const useStyles = makeStyles(theme => ({
+  root: {},
+  details: {
+    display: 'flex'
   },
-  paper: {
-    height: 140,
-    width: 100,
+  btnstyle: {
+    marginLeft: 'auto',
   },
-  control: {
-    padding: theme.spacing(2),
+  activeInactive: {
+    border: '1px solid black',
+    borderRadius: 5
   },
+  price: {
+    textAlign: 'right',
+    paddingRight: 35
+  },
+  productImg: {
+    height: 80,
+    width: 80,
+  },
+  productDetail: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  image: {
+    textAlign: 'center'
+  },
+  description: {
+    paddingLeft: 20,
+  }
 }));
 
-function MyListings() {
-  const [spacing, setSpacing] = React.useState(2);
+const AccountProfile = props => {
+  const { className, ...rest } = props;
+
   const classes = useStyles();
 
-  const handleChange = (event) => {
-    setSpacing(Number(event.target.value));
+  const product = {
+    avatar: '/images/products/product_4.png'
   };
 
   return (
-    <Grid container className={classes.root} spacing={2}>
-      <Grid item xs={12}>
-        <Grid container justify="center" spacing={spacing}>
-          {[0, 1, 2].map((value) => (
-            <Grid key={value} item>
-              <Paper className={classes.paper} />
-            </Grid>
-          ))}
-        </Grid>
-      </Grid>
-      <Grid item xs={12}>
-        <Paper className={classes.control}>
+    <Card
+      {...rest}
+      className={clsx(classes.root, className)}
+    >
+      <CardContent>
+        <div className={classes.details}>
           <Grid container>
-            <Grid item>
-              <FormLabel>spacing</FormLabel>
-              <RadioGroup
-                name="spacing"
-                aria-label="spacing"
-                value={spacing.toString()}
-                onChange={handleChange}
-                row
-              >
-                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value) => (
-                  <FormControlLabel
-                    key={value}
-                    value={value.toString()}
-                    control={<Radio />}
-                    label={value.toString()}
-                  />
-                ))}
-              </RadioGroup>
+            <Grid item md={8} xs={12}>
+            <Typography
+              gutterBottom
+              variant="h2"
+            >
+              My Listings
+            </Typography>
+            </Grid>  
+            <Grid item md={4} xs={12}>
+            <CardActions className={classes.btnstyle}>
+            <div className={classes.activeInactive}>
+            <Button
+              color="primary"
+              variant="text"
+            >
+              Active
+            </Button>
+            <Button
+              color="primary"
+              variant="text"
+            >
+              Inactive
+            </Button>
+            </div>
+            <Button
+              color="primary"
+              variant="contained"
+            >
+              NEW LISTING
+        </Button>
+        </CardActions>
+            </Grid>
+          </Grid> 
+          
+        </div>
+      </CardContent>
+      <Divider />
+
+      <div>
+        <Divider />
+        <CardContent>
+          <Grid
+            container
+            className={classes.productDetail}
+          >
+            <Grid
+              className={classes.image}
+              item
+              md={1}
+              xs={12}
+            >
+            <img className={classes.productImg} src={product.avatar} alt="product" />
+            </Grid>
+            <Grid
+              className={classes.description}
+              item
+              md={8}
+              xs={12}
+            >
+            <Typography
+              gutterBottom
+              variant="h3"
+              >Black suit</Typography>
+
+              <Typography
+              gutterBottom
+              variant="h6"
+              color="textSecondary"
+              >HUGO BOSS</Typography>
+              
+              <Typography
+              gutterBottom
+              variant="h5"
+              >Medium | Practically New | Chic | Black</Typography>
+            </Grid>
+            <Grid
+              item
+              md={3}
+              xs={12}
+            >
+            <Typography
+              className={classes.price}
+                gutterBottom
+                variant="h4"
+                color="primary"
+                >$20 / day</Typography>
+                <CardActions className={classes.btnstyle}>
+                    <Button
+                      className={classes.uploadButton}
+                      color="primary"
+                      variant="text"
+                    >
+                      MAKE IT INACTIVE
+                    </Button>
+                    <Button
+                      // className={classes.uploadButton}
+                      color="primary"
+                      variant="text"
+                    >
+                      Update
+                    </Button>
+                </CardActions> 
+
             </Grid>
           </Grid>
-        </Paper>
-      </Grid>
-    </Grid>
+        </CardContent>
+      </div>
+      <Divider />
+
+    </Card>
   );
-}
+};
 
+AccountProfile.propTypes = {
+  className: PropTypes.string
+};
 
-export default MyListings;
+export default AccountProfile;
