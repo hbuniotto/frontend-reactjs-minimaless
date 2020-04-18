@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import {
-    FormControl,
+  FormControl,
   InputLabel,
   TextField,
   Grid,
@@ -29,11 +29,12 @@ const ListDetails = props => {
     <form>
           <Grid
             container
-            spacing={3}
+            spacing={1}
           >
             <Grid
             style={{margin: '0 auto'}}
               item
+              lg={6}
               md={6}
               xs={12}
             >
@@ -48,14 +49,15 @@ const ListDetails = props => {
             <Grid
             style={{margin: '0 auto'}}
               item
-              md={8}
+              md={7}
               xs={12}
             >
               <TextField
                 fullWidth
-                label="Demo1"
+                label="Title" // this will be saved in the DB
+                placeholder="My cool black leather jacket"
                 margin="dense"
-                name="demo1"
+                name="Title"
                 // onChange={handleChange}
                 required
                 // value={values.demo1}
@@ -65,14 +67,15 @@ const ListDetails = props => {
             <Grid
               style={{margin: '0 auto'}}
               item
-              md={8}
+              md={7}
               xs={12}
             >
               <TextField
                 fullWidth
-                label="Demo2"
+                label="Brand"
+                placeholder="HUGO BOSS" // THIS NEEDS TO BE BROUGHT toUppercae
                 margin="dense"
-                name="demo2"
+                name="Brand"
                 // onChange={handleChange}
                 required
                 // value={values.demo2}
@@ -82,7 +85,7 @@ const ListDetails = props => {
             <Grid
               style={{margin: '0 auto'}}
               item
-              md={8}
+              md={7}
               xs={12}
             >
               <FormControl className={classes.formControl}>
@@ -99,14 +102,16 @@ const ListDetails = props => {
                   <option value={8}>Ten</option>
                   <option value={20}>Twenty</option>
                   <option value={30}>Thirty</option>
+                  
                   </NativeSelect>
               </FormControl>
             </Grid>
             <Grid
               style={{margin: '0 auto'}}
               item
-              md={8}
+              md={7}
               xs={12}
+              required
             >
               <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="age-native-helper">Condition</InputLabel>
@@ -128,7 +133,7 @@ const ListDetails = props => {
             <Grid
               style={{margin: '0 auto'}}
               item
-              md={8}
+              md={7}
               xs={12}
             >
               <FormControl className={classes.formControl}>
@@ -151,7 +156,7 @@ const ListDetails = props => {
             <Grid
               style={{margin: '0 auto'}}
               item
-              md={8}
+              md={7}
               xs={12}
             >
                 <FormControl className={classes.formControl}>
@@ -174,7 +179,7 @@ const ListDetails = props => {
             <Grid
               style={{margin: '0 auto'}}
               item
-              md={8}
+              md={7}
               xs={12}
             >
                 <FormControl className={classes.formControl}>

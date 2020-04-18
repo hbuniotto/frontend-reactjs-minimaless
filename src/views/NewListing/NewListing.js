@@ -17,11 +17,12 @@ const NewListing = () => {
     <div className={classes.root}>
       <Grid
         container
-        spacing={4}
+        spacing={1}
       >
         <Grid
+          style={{margin: '0 auto'}}
           item
-          lg={12}
+          lg={8}
           md={12}
           xl={12}
           xs={12}

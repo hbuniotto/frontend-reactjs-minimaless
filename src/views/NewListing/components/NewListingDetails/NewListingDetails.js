@@ -9,7 +9,7 @@ import { Grid, Stepper, Step, StepLabel, Button } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
+    width: '80%',
   },
   btnGroup: {
     textAlign: 'center',
@@ -82,7 +82,6 @@ const NewListingDetails = () => {
         })}
       </Stepper>
 
-
       <div>
         {activeStep === steps.length ? (
           <AlertNotify  />
@@ -111,3 +110,5 @@ const NewListingDetails = () => {
 }
 
 export default NewListingDetails
+
+// REFACTOR REDIRECT TO LISTINS PAGE

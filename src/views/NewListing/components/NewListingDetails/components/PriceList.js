@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import {
   Grid,
   Typography,
@@ -82,6 +83,8 @@ const PriceList = props => {
                 <div className={classes.price}>
                 <TextField
                     label="Price"
+                    placeholder="20" // REFACTOR ADD $ AS PREFIX
+                    type="number" // REFACTOR ONLY INTEGERS .replace(/\+|-/ig, '');
                     margin="dense"
                     name="price"
                     // onChange={handleChange}
@@ -94,7 +97,7 @@ const PriceList = props => {
                     color="textSecondary"
                     variant="body1"
                     >
-                    Per Day
+                    per day
                 </Typography>
                 </div>
             </Grid>
@@ -110,7 +113,9 @@ const PriceList = props => {
                     color="textSecondary"
                     variant="body1"
                     >
-                    Set the daily rate of your listing. There is no listing fee, and renters contact you directly to arrange pickup at a location that is convenie.t to you.
+                    Set the daily rate of your listing. 
+                    There is no listing fee, and renters contact you directly to arrange pickup 
+                    at a location that is convenient to you.
                 </Typography>
                 </Grid>
           </Grid>

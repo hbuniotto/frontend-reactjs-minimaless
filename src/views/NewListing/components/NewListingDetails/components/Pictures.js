@@ -65,7 +65,7 @@ const Pictures = props => {
             <Grid
             style={{margin: '0 auto'}}
             item
-            md={6}
+            md={8}
             xs={12}
             >
             <Typography
@@ -79,7 +79,7 @@ const Pictures = props => {
             <Grid
             style={{margin: '0 auto'}}
               item
-              md={8}
+              md={12}
               xs={12}
             >
                 <div className={classes.uploadbtn}>
@@ -100,7 +100,7 @@ const Pictures = props => {
             <Grid
               style={{margin: '0 auto'}}
               item
-              md={10}
+              md={12}
               xs={12}
             >
                 <div className={classes.image}>
@@ -108,8 +108,9 @@ const Pictures = props => {
                         <div key={i} className={classes.imageBody}>
                             <img className={classes.productImg} src={product.avatar} alt="product" />
                             <div className={classes.iconarea}>
-                            <DeleteIcon style={{ fill: 'red' }} />
-                            <StarIcon style={{ fill: 'yellow' }} />
+                            <DeleteIcon style={{ fill: 'gray' }} />
+                            <StarIcon style={{ fill: 'orange' }} /> 
+                            {/* WE NEED TO CREATE A METHOD TO STAR AS FAVORITE IF ORANGE */}
                             </div>
                         </div>
                     ))}

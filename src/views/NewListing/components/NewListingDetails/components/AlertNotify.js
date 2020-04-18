@@ -7,7 +7,7 @@ import { Typography } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
     root: {},
     alertNotify: {
-        backgroundColor: 'lightgreen',
+        backgroundColor: 'white',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
         top: 100,
         right: 0,
         width: 280,
-        border: '1px solid black',
+        border: '2px green',
         borderRadius: 5,
         padding: 10
     },
@@ -31,7 +31,7 @@ const AlertNotify = (props) => {
 
     setTimeout(() => {
         setAlert(false)
-    }, 3000);
+    }, 2000);
     
   return (
       <div className={classes.wrapper}>
@@ -39,8 +39,7 @@ const AlertNotify = (props) => {
             <div className={classes.alertNotify}>
             <CheckCircleRoundedIcon className={classes.successicon} />
             <div>
-                <Typography variant="h6">Yay!</Typography>
-                <Typography variant="h6">Your listing has been created!</Typography>
+                <Typography variant="h6">Yay, your listing has been created!</Typography>
             </div>
         </div>
         </Slide>
