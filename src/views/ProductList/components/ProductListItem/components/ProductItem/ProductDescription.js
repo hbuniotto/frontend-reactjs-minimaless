@@ -8,9 +8,11 @@ import {
 } from '@material-ui/core';
 import ImageIcon from '@material-ui/icons/Image';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
     body: {
+        curson: 'pointer',
         display: 'flex',
         justifyContent: 'space-between',
         height: '100%',
@@ -56,6 +58,8 @@ const ProductDescription = props => {
   const classes = useStyles();
 
   return (
+    <Link to="/products/listingdetails">
+
     <div className={classes.body}>
       <Typography className={classes.suit}>
         Black Suit
@@ -79,6 +83,8 @@ const ProductDescription = props => {
         <span className={classes.price}>$20 / day</span>
       </div>
     </div>
+    </Link>
+
   );
 };
 

@@ -89,6 +89,7 @@ const AccountProfile = props => {
             <Button
               color="primary"
               variant="contained"
+              href="/account/newlisting"
             >
               NEW LISTING
         </Button>
