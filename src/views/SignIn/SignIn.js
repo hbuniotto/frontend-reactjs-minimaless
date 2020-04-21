@@ -13,7 +13,11 @@ import {
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
-import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
+// import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
+import Axios from 'axios';
+
+import setAuthToken from '../../common/setAuthToken';
+import jwt_decode from 'jwt-decode';
 
 const schema = {
   email: {
@@ -132,10 +136,19 @@ const SignIn = props => {
 
   const [formState, setFormState] = useState({
     isValid: false,
-    values: {},
+    values: {
+      email: '',
+      password: ''
+    },
     touched: {},
-    errors: {}
+    errors: {},
+    emailPasswordError: {},
+    isAuthenticated: false,
+    user: {}
   });
+
+  // console.log(formState.isAuthenticated)
+  // console.log(formState.user)
 
   useEffect(() => {
     const errors = validate(formState.values, schema);
@@ -166,13 +179,46 @@ const SignIn = props => {
       touched: {
         ...formState.touched,
         [event.target.name]: true
-      }
+      },
+      emailPasswordError: '',
     }));
   };
 
+  const userAuthentication = (token) => {
+    // Set token to ls
+    localStorage.setItem('jwtToken', token);
+    // Set token to Auth header
+    setAuthToken(token);
+    // Decode token to get user data
+    const decoded = jwt_decode(token);
+    // const isAuthenticated = !isEmpty(decoded)
+    setFormState(formState => ({
+      ...formState,
+      isAuthenticated: true ? true : false,
+      user: decoded
+    }));
+  }
+
   const handleSignIn = event => {
     event.preventDefault();
-    history.push('/');
+    const userData = {
+      email: formState.values.email,
+      password: formState.values.password
+    }
+
+    Axios.post('http://localhost:3001/api/login', userData)
+    .then(res => {
+      const { token } = res.data;
+      userAuthentication(token)
+      history.push('/dashboard')
+    })
+    .catch(err => {
+      const emailPasswordError = err.response.data;
+      setFormState(formState => ({
+        ...formState,
+        emailPasswordError: emailPasswordError || ''
+      }));
+    })
   };
 
   const hasError = field =>
@@ -243,7 +289,7 @@ const SignIn = props => {
                 >
                   
                 </Typography>
-                <Grid
+                {/* <Grid
                   className={classes.socialButtons}
                   container
                   spacing={2}
@@ -269,14 +315,14 @@ const SignIn = props => {
                       Login with Google
                     </Button>
                   </Grid>
-                </Grid>
+                </Grid> */}
                 <Typography
                   align="center"
                   className={classes.sugestion}
                   color="textSecondary"
                   variant="body1"
                 >
-                  or use email address
+                  Use email address
                 </Typography>
                 <TextField
                   className={classes.textField}
@@ -292,6 +338,14 @@ const SignIn = props => {
                   value={formState.values.email || ''}
                   variant="outlined"
                 />
+
+                {formState.emailPasswordError.email ? <Typography
+                  style={{color: 'red'}}
+                  variant="body2"
+                >
+                  {formState.emailPasswordError.email}
+                </Typography> : ''}
+
                 <TextField
                   className={classes.textField}
                   error={hasError('password')}
@@ -306,6 +360,14 @@ const SignIn = props => {
                   value={formState.values.password || ''}
                   variant="outlined"
                 />
+
+                {formState.emailPasswordError.password ? <Typography
+                  style={{color: 'red'}}
+                  variant="body2"
+                >
+                  {formState.emailPasswordError.password}
+                </Typography> : ''}
+
                 <Button
                   className={classes.signInButton}
                   color="primary"
@@ -324,7 +386,7 @@ const SignIn = props => {
                   Not a member yet?{' '}
                   <Link
                     component={RouterLink}
-                    to="/sign-up"
+                    to="/signup"
                     variant="h6"
                   >
                     Sign up in less than a minute

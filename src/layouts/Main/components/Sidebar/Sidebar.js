@@ -45,7 +45,7 @@ const Sidebar = props => {
   const pages = [
     {
       title: 'Listing',
-      href: '/products', // connect to listings route
+      href: '/listings', // connect to listings route
       icon: <ShoppingBasketIcon />
     },
     {

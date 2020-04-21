@@ -228,12 +228,13 @@ const AccountProfile = props => {
             >
               <TextField
                 fullWidth
-                label="Country"
+                label="Zip Code"
+                type="number"
                 margin="dense"
                 name="country"
                 onChange={handleChange}
                 required
-                value={values.country}
+                value={values.zipcode}
                 variant="outlined"
               />
             </Grid>

@@ -41,10 +41,15 @@ const ProductsToolbar = props => {
       <div className={classes.row}>
         <span className={classes.spacer} />
         {/* <Button className={classes.importButton}>Import</Button> */}
-        <Button className={classes.exportButton}>MY STUFF </Button>
+        <Button 
+          className={classes.exportButton}
+        >
+            {/* MY STUFF  */}
+        </Button>
         <Button
           color="primary"
           variant="contained"
+          href="/account/newlisting"
         >
           LIST MY STUFF
         </Button>

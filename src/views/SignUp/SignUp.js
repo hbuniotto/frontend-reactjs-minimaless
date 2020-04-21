@@ -3,31 +3,29 @@ import { Link as RouterLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import validate from 'validate.js';
 import { makeStyles } from '@material-ui/styles';
+
+// import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import setAuthToken from '../../common/setAuthToken';
+import jwt_decode from 'jwt-decode';
+
+// import Alert from '../../common/Alert'
+
 import {
   Grid,
   Button,
   IconButton,
   TextField,
   Link,
-  FormHelperText,
-  Checkbox,
+  // FormHelperText,
+  // Checkbox,
   Typography
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import Axios from 'axios';
 
 const schema = {
-  firstName: {
-    presence: { allowEmpty: false, message: 'First name is required' },
-    length: {
-      maximum: 32
-    }
-  },
-  lastName: {
-    presence: { allowEmpty: false, message: 'Last name is required' },
-    length: {
-      maximum: 32
-    }
-  },
   email: {
     presence: { allowEmpty: false, message: 'Email is required' },
     email: true,
@@ -36,15 +34,24 @@ const schema = {
     }
   },
   password: {
+    format: {
+      pattern: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/,
+      message: function(value, attribute, validatorOptions, attributes, globalOptions) {
+        return validate.format("must have at least 6 characters, a number, a lowercase and an uppercase letter.", {
+          num: value
+        });
+      }
+    },
     presence: { allowEmpty: false, message: 'Passport is required' },
     length: {
       maximum: 128
     }
   },
-  policy: {
-    presence: { allowEmpty: false, message: 'Please agree to the Terms & Conditions to continue' },
-    checked: true
-  }
+  // pattern: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/,
+  // policy: {
+  //   presence: { allowEmpty: false, message: 'Please agree to the Terms & Conditions to continue' },
+  //   checked: true
+  // }
 };
 
 const useStyles = makeStyles(theme => ({
@@ -137,7 +144,20 @@ const useStyles = makeStyles(theme => ({
   },
   signUpButton: {
     margin: theme.spacing(2, 0)
-  }
+  },
+  alertNotify: {
+    backgroundColor: 'lightgreen',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    top: 100,
+    right: 0,
+    width: 280,
+    border: '1px solid black',
+    borderRadius: 5,
+    padding: 10
+},
 }));
 
 const SignUp = props => {
@@ -147,10 +167,20 @@ const SignUp = props => {
 
   const [formState, setFormState] = useState({
     isValid: false,
-    values: {},
+    values: {
+      email: '',
+      password: ''
+    },
     touched: {},
-    errors: {}
+    errors: {},
+    emailError: '',
+    success: false,
+    isAuthenticated: false,
+    user: {}
   });
+
+  // console.log(formState.isAuthenticated)
+  // console.log(formState.user)
 
   useEffect(() => {
     const errors = validate(formState.values, schema);
@@ -177,7 +207,8 @@ const SignUp = props => {
       touched: {
         ...formState.touched,
         [event.target.name]: true
-      }
+      },
+      emailError: '',
     }));
   };
 
@@ -185,9 +216,40 @@ const SignUp = props => {
     history.goBack();
   };
 
+  const userAuthentication = (token) => {
+    // Set token to ls
+    localStorage.setItem('jwtToken', token);
+    // Set token to Auth header
+    setAuthToken(token);
+    // Decode token to get user data
+    const decoded = jwt_decode(token);
+    setFormState(formState => ({
+      ...formState,
+      isAuthenticated: true ? true : false,
+      user: decoded
+    }));
+  }
+
   const handleSignUp = event => {
     event.preventDefault();
-    history.push('/');
+
+    const userData = {
+      email: formState.values.email,
+      password: formState.values.password
+    }
+    Axios.post('http://localhost:3001/api/signup', userData)
+    .then(res => {
+      const { token } = res.data;
+      userAuthentication(token)
+      history.push('/listings')
+    })
+    .catch(err => {
+      const emailError = err.response.data.message;
+      setFormState(formState => ({
+        ...formState,
+        emailError: emailError || ''
+      }));
+    })
   };
 
   const hasError = field =>
@@ -257,34 +319,7 @@ const SignUp = props => {
                 >
                   Use your email to create new account
                 </Typography>
-                <TextField
-                  className={classes.textField}
-                  error={hasError('firstName')}
-                  fullWidth
-                  helperText={
-                    hasError('firstName') ? formState.errors.firstName[0] : null
-                  }
-                  label="First name"
-                  name="firstName"
-                  onChange={handleChange}
-                  type="text"
-                  value={formState.values.firstName || ''}
-                  variant="outlined"
-                />
-                <TextField
-                  className={classes.textField}
-                  error={hasError('lastName')}
-                  fullWidth
-                  helperText={
-                    hasError('lastName') ? formState.errors.lastName[0] : null
-                  }
-                  label="Last name"
-                  name="lastName"
-                  onChange={handleChange}
-                  type="text"
-                  value={formState.values.lastName || ''}
-                  variant="outlined"
-                />
+                
                 <TextField
                   className={classes.textField}
                   error={hasError('email')}
@@ -299,6 +334,14 @@ const SignUp = props => {
                   value={formState.values.email || ''}
                   variant="outlined"
                 />
+                
+                {formState.emailError ? <Typography
+                  style={{color: 'red'}}
+                  variant="body2"
+                >
+                  {formState.emailError}
+                </Typography> : ''}
+
                 <TextField
                   className={classes.textField}
                   error={hasError('password')}
@@ -313,7 +356,7 @@ const SignUp = props => {
                   value={formState.values.password || ''}
                   variant="outlined"
                 />
-                <div className={classes.policy}>
+                {/* <div className={classes.policy}>
                   <Checkbox
                     checked={formState.values.policy || false}
                     className={classes.policyCheckbox}
@@ -337,12 +380,12 @@ const SignUp = props => {
                       Terms & Conditions
                     </Link>
                   </Typography>
-                </div>
-                {hasError('policy') && (
+                </div> */}
+                {/* {hasError('policy') && (
                   <FormHelperText error>
                     {formState.errors.policy[0]}
                   </FormHelperText>
-                )}
+                )} */}
                 <Button
                   className={classes.signUpButton}
                   color="primary"
@@ -361,13 +404,16 @@ const SignUp = props => {
                   Already a member?{' '}
                   <Link
                     component={RouterLink}
-                    to="/signin"
+                    to="/login"
                     variant="h6"
                   >
                     Login
                   </Link>
                 </Typography>
               </form>
+
+
+
             </div>
           </div>
         </Grid>

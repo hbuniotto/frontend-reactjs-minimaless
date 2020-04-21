@@ -62,7 +62,7 @@ const AccountProfile = props => {
       <CardContent>
         <div className={classes.details}>
           <Grid container>
-            <Grid item md={8} xs={12}>
+            <Grid item md={9} xs={12}>
             <Typography
               gutterBottom
               variant="h2"
