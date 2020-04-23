@@ -1,17 +1,23 @@
-import React, {useState} from 'react';
+import React, { Component } from 'react'
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/styles';
 import {
   Grid,
   Typography,
-  Button
+  Button,
+  CircularProgress
 } from '@material-ui/core';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 import StarIcon from '@material-ui/icons/Star';
 
-const useStyles = makeStyles(theme => ({
+
+import Axios from 'axios'
+
+import '../../../../../assets/scss/slider.scss';
+
+const useStyles = theme => ({
     root: {},
     text: {
         textAlign: 'center',
@@ -43,87 +49,146 @@ const useStyles = makeStyles(theme => ({
         width: '60%',
         marginLeft: '20%'
     }
-}));
+});
 
-const Pictures = props => {
-  const { className, ...rest } = props;
+class Pictures extends Component {
 
-  const classes = useStyles();
+    state = {
+        images: [],
+        formSuccess: false,
 
-  const imagearr = [1,2,3,4,5]
+        uploadedFiles: [],
+        uploading: false
+    }
 
-  const product = {
-    avatar: '/images/products/product_4.png'
-  };
+    handleImageChange = (e) => {
+        this.setState({uploading:true});
+        let formData = new FormData();
+        const config = {
+            header: {'content-type':'multipart/form-data'}
+        }
+        formData.append("file",e.target.files[0]);
 
-  return (
-      <div>
-          <Grid
-            container
-            spacing={3}
-          >
+        Axios.post('http://localhost:3001/api/listings/uploadimage',formData,config)
+        .then(response => {
+ 
+             this.setState({
+                 uploading:false,
+                 uploadedFiles:[
+                     ...this.state.uploadedFiles,
+                     response.data
+                 ]
+             },()=>{
+                 this.props.imagesHandler(this.state.uploadedFiles)
+             })
+        });
+     }
+
+     onRemove = (id) => {
+        this.setState({uploading:true});
+        Axios.get(`http://localhost:3001/api/listings/removeimage?public_id=${id}`).then(response=>{
+            let images = this.state.uploadedFiles.filter(item=>{
+                return item.public_id !== id;
+            });
+
+            this.setState({
+                uploadedFiles: images,
+                uploading:false
+            },()=>{
+                this.props.imagesHandler(images)
+            })
+        })
+    }
+
+    classes = useStyles();
+
+    render() {
+        const { classes } = this.props;
+        return (
+            <div>
             <Grid
-            style={{margin: '0 auto'}}
-            item
-            md={8}
-            xs={12}
+              container
+              spacing={3}
             >
-            <Typography
-                className={classes.text}
-                color="textSecondary"
-                variant="body1"
-                >
-                Upload pictures of your listing to impress potential renters. Be sure to star your favorite photo to featured as the primary image in the search results.
-            </Typography>
-            </Grid>
-            <Grid
-            style={{margin: '0 auto'}}
-              item
-              md={12}
-              xs={12}
-            >
-                <div className={classes.uploadbtn}>
-                <input
-                    accept="image/*"
-                    className={classes.input}
-                    id="contained-button-file"
-                    multiple
-                    type="file"
-                />
-                <label htmlFor="contained-button-file">
-                    <Button variant="contained" color="primary" component="span">
-                    Upload
-                    </Button>
-                </label>
-                </div>
-            </Grid>
-            <Grid
+              <Grid
               style={{margin: '0 auto'}}
               item
-              md={12}
+              md={8}
               xs={12}
-            >
-                <div className={classes.image}>
-                    {imagearr.map((image, i )=> (
-                        <div key={i} className={classes.imageBody}>
-                            <img className={classes.productImg} src={product.avatar} alt="product" />
-                            <div className={classes.iconarea}>
-                            <DeleteIcon style={{ fill: 'gray' }} />
-                            <StarIcon style={{ fill: 'orange' }} /> 
-                            {/* WE NEED TO CREATE A METHOD TO STAR AS FAVORITE IF ORANGE */}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </Grid>
-          </Grid>
-      </div>
+              >
+              <Typography
+                  className={classes.text}
+                  color="textSecondary"
+                  variant="body1"
+                  >
+                  Upload pictures of your listing to impress potential renters. Be sure to star your favorite photo to featured as the primary image in the search results.
+              </Typography>
+              </Grid>
+              <Grid
+              style={{margin: '0 auto'}}
+                item
+                md={12}
+                xs={12}
+              >
+                  <div className={classes.uploadbtn}>
+                  <input
+                      accept="image/*"
+                      className={classes.input}
+                      id="contained-button-file"
+                      multiple
+                      type="file"
+                      onChange={this.handleImageChange}
+                  />
+                  <label htmlFor="contained-button-file">
+                      <Button variant="contained" color="primary" component="span">
+                      Upload
+                      </Button>
+                  </label>
+                  </div>
+              </Grid>
+              <Grid
+                style={{margin: '0 auto'}}
+                item
+                md={12}
+                xs={12}
+              >
+                {this.state.uploading ?  <div style={{textAlign: 'center'}}><CircularProgress /></div> : '' }               
 
-  );
-};
+                {this.state.uploadedFiles.length > 0 ? (
+                    <div className={classes.image}>
+                        {this.state.uploadedFiles.map((image, i )=> (
+                            <div key={i} className={classes.imageBody}>
+                                <img className={classes.productImg} src={image.url} alt="product" />
+                                <div className={classes.iconarea}>
+                                <DeleteIcon onClick={()=> this.onRemove(image.public_id)} style={{ fill: 'gray', cursor: 'pointer' }} />
+                                <StarIcon style={{ fill: 'orange' }} /> 
+                                {/* WE NEED TO CREATE A METHOD TO STAR AS FAVORITE IF ORANGE */}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                  ) : <Typography
+                        className={classes.text}
+                        color="textSecondary"
+                        variant="body1"
+                        >
+                        Please Upload Your Pictures.
+                    </Typography>
+                }
+              </Grid>
+            </Grid>
+        </div>
+        )
+    }
+}
 
 Pictures.propTypes = {
-  className: PropTypes.string
+    className: PropTypes.string
 };
 
-export default Pictures;
+
+export default withStyles(useStyles)(Pictures)
+
+
+
+

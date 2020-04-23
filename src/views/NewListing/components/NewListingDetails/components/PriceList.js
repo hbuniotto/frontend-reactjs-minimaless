@@ -53,6 +53,7 @@ const PriceList = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
+  const {price} = props.formState.values
 
   return (
       <div>
@@ -87,10 +88,11 @@ const PriceList = props => {
                     type="number" // REFACTOR ONLY INTEGERS .replace(/\+|-/ig, '');
                     margin="dense"
                     name="price"
-                    // onChange={handleChange}
                     required
-                    // value={values.state}
                     variant="outlined"
+
+                    onChange={props.handleChange}
+                    value={price || ''}
                 />
                 <Typography
                     className={classes.pricetext}

@@ -1,16 +1,18 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import {
   Grid,
   Avatar,
-  Divider
+  Divider,
+  Typography
 } from '@material-ui/core';
 import '../../../../../../assets/scss/slider.scss'
 
 import ProductDescription from './ProductDescription'
 import Slider from "react-slick";
 import ProductImage from './ProductImage';
+import Axios from 'axios';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -20,49 +22,39 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ProductItem = props => {
-  const {products, className, ...rest } = props;
+  const {products, className } = props;
   const classes = useStyles();
 
-  var settings = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1
-  };
+  const [listingsData, setListingData] = useState([])
+  const [lodingData, setlodingData] = useState(false)
+
+  useEffect(() => {
+    Axios.get('http://localhost:3001/api/listings')
+      .then(res => {
+        setlodingData(true)
+        setListingData(res.data.lists)
+        setlodingData(false)
+      }).catch(err => {
+        console.log(err)
+        setlodingData(false)
+      })
+  }, [])
 
   return (
-      <div className={classes.body}>
-          <Grid container spacing={1}>
+    <div className={classes.body}>
+              {listingsData.length === 0 ? <Typography variant="h3" gutterBottom>
+                 No results found
+                </Typography> : listingsData.map((lists, i) => (
+                <Grid key={i} container spacing={1}>
+                    <Grid className={classes.item} item sm={6} xs={12}>
+                      <ProductImage lists={lists} products={products} />
+                    </Grid>
 
-            <Grid className={classes.item} item sm={6} xs={12}>
-              <ProductImage products={products} />
-            </Grid>
-            <Grid className={classes.item2} item sm={6} xs={12} >
-              <ProductDescription />
-            </Grid>
-
-            <Grid className={classes.item} item sm={6} xs={12}>
-              <ProductImage products={products} />
-            </Grid>
-            <Grid className={classes.item2} item sm={6} xs={12} >
-              <ProductDescription />
-            </Grid>
-
-            <Grid className={classes.item} item sm={6} xs={12}>
-              <ProductImage products={products} />
-            </Grid>
-            <Grid className={classes.item2} item sm={6} xs={12} >
-              <ProductDescription />
-            </Grid>
-
-            <Grid className={classes.item} item sm={6} xs={12}>
-              <ProductImage products={products} />
-            </Grid>
-            <Grid className={classes.item2} item sm={6} xs={12} >
-              <ProductDescription />
-            </Grid>
-
-          </Grid>
+                    <Grid className={classes.item2} item sm={6} xs={12} >
+                      <ProductDescription lists={lists} />
+                    </Grid>
+                </Grid>
+            ))}
       </div>
   );
 };

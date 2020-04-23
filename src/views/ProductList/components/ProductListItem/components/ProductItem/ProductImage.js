@@ -23,11 +23,13 @@ const ProductImage = props => {
     slidesToScroll: 1
   };
 
+  const {images} = props.lists
+
   return (
 
     <Slider {...settings} className="slider">
-        {products.map(product => (
-        <img className="sliderImage" alt="Remy Sharp" src={product.imageUrl} />
+        {images.map(image => (
+        <img className="sliderImage" alt="Remy Sharp" src={image.url} />
         ))}
     </Slider>
 

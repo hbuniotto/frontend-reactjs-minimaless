@@ -26,6 +26,7 @@ const useStyles = makeStyles(() => ({
         fontSize: 12,
         fontWeight: 'normal',
         marginLeft: 10,
+        textTransform: 'uppercase'
     },
   suitType: {
     fontSize: 15,
@@ -57,16 +58,19 @@ const ProductDescription = props => {
 
   const classes = useStyles();
 
+  console.log(props.lists)
+  const {brand,price, category, color, condition, occasion, size, title} = props.lists
   return (
     <Link to="/products/listingdetails">
 
     <div className={classes.body}>
       <Typography className={classes.suit}>
-        Black Suit
-      <span className={classes.suitTitle}>HUGO BOSS</span>
+        {title}
+      <span className={classes.suitTitle}>{brand}</span>
       </Typography>
       <Typography className={classes.suitType}>
-      <span>Medium</span> | <span>Practically New</span> | <span>Chic</span> | <span>Black</span> 
+      <span>{size}</span>
+      {/* <span>{size}</span> | <span>Practically New</span> | <span>Chic</span> | <span>Black</span>  */}
       </Typography>
       <Typography className={classes.description}>
         Renting my jacket that I barely ever use. 
@@ -80,7 +84,7 @@ const ProductDescription = props => {
       <div className={classes.location}>
         <LocationOnIcon color="primary" />
         <span className={classes.distance}>3 miles away</span>
-        <span className={classes.price}>$20 / day</span>
+        <span className={classes.price}>${price} / day</span>
       </div>
     </div>
     </Link>
