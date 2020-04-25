@@ -16,11 +16,13 @@ const useStyles = makeStyles(() => ({
         display: 'flex',
         justifyContent: 'space-between',
         height: '100%',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        marginLeft: 25
     },
     suit: {
         fontSize: 25,
         fontWeight: 'bold',
+        textTransform: 'capitalize'
     },
     suitTitle: {
         fontSize: 12,
@@ -58,11 +60,9 @@ const ProductDescription = props => {
 
   const classes = useStyles();
 
-  console.log(props.lists)
-  const {brand,price, category, color, condition, occasion, size, title} = props.lists
+  const {brand,description, price, size, title, _id} = props.lists
   return (
-    <Link to="/products/listingdetails">
-
+    <Link to={`/listings/${_id}`}>
     <div className={classes.body}>
       <Typography className={classes.suit}>
         {title}
@@ -73,7 +73,7 @@ const ProductDescription = props => {
       {/* <span>{size}</span> | <span>Practically New</span> | <span>Chic</span> | <span>Black</span>  */}
       </Typography>
       <Typography className={classes.description}>
-        Renting my jacket that I barely ever use. 
+        {description}
       </Typography>
       <div className={classes.avatar}>
       <Avatar alt="Remy Sharp" src="/images/avatars/humberto.jpg" />

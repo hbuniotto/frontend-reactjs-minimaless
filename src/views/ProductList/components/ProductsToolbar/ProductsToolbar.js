@@ -51,7 +51,7 @@ const ProductsToolbar = props => {
           variant="contained"
           href="/account/newlisting"
         >
-          LIST MY STUFF
+          NEW LISTING
         </Button>
       </div>
       <div className={classes.row}>

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { IconButton, Grid, Typography } from '@material-ui/core';
-// import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-// import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 import { ProductsToolbar, ProductCard, ProductListItem } from './components';
 
@@ -37,8 +35,7 @@ const ProductList = () => {
   const [products] = useState(mockData);
   return (
     <div className={classes.root}>
-      <ProductsToolbar />
-
+        <ProductsToolbar />
         <ProductListItem products={products} />
 
       {/* <div className={classes.content}>

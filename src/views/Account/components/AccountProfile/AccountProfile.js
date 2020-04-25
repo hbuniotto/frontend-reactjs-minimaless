@@ -73,9 +73,9 @@ const AccountProfile = props => {
       lastName: values.lastName,
       email: values.email,
       street: values.street,
+      city: values.city,
       phone: values.phone,
       state: values.state,
-      country: values.country,
     }
     console.log(update)
   }
@@ -128,31 +128,27 @@ const AccountProfile = props => {
             className={classes.avatar}
             src={user.avatar}
           />
+          
         </div>
-        <div className={classes.progress}>
-          {/* <Typography variant="body1">Profile Completeness: 70%</Typography> */}
-          <LinearProgress
-            value={70}
-            variant="determinate"
-          />
-        </div>
+        
       </CardContent>
       <Divider />
       <CardActions>
         <Button
           className={classes.uploadButton}
           color="primary"
-          variant="text"
+          variant="outlined"
         >
-          Upload picture
+          UPLOAD PICTURE
         </Button>
-        <Button variant="text">Remove picture</Button>
+        
       </CardActions>
       <Divider />
       <CardContent>
       <form autoComplete="off" onSubmit={handleUpdate}>
         <Divider />
         <CardContent>
+          
           <Grid
             container
             spacing={3}
@@ -277,7 +273,7 @@ const AccountProfile = props => {
           <Button
             className={classes.uploadButton}
             color="primary"
-            variant="text"
+            variant="outlined"
             type='submit'
             onSubmit={handleUpdate}
           >

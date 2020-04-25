@@ -21,15 +21,18 @@ const useStyles = makeStyles(theme => ({
   suit: {
     display: 'flex',
     justifyContent: 'flex-start',
-    alignItems: 'baseline'
+    alignItems: 'baseline',
+    textTransform: 'capitalize'
   },
   suittype: {
-    marginLeft: 10
+    marginLeft: 10,
+    textTransform: 'uppercase'
   }
 }));
 
 const ProductListDetailsHeader = props => {
   const { className, ...rest } = props;
+  
 
   const classes = useStyles();
 
@@ -38,7 +41,7 @@ const ProductListDetailsHeader = props => {
       {...rest}
       className={clsx(classes.root, className)}
     >
-      <CardContent>
+      {props.listingsData.map(lists => lists._id === props.id ? <CardContent key={lists._id}>
         <div className={classes.details}>
           <div>
             <div className={classes.suit}>
@@ -46,14 +49,14 @@ const ProductListDetailsHeader = props => {
               gutterBottom
               variant="h4"
             >
-              Black suit
+              {lists.title}
             </Typography>
             <Typography
               className={classes.suittype}
               color="textSecondary"
               variant="body2"
             >
-              HUGO BOSS
+              {lists.brand}
             </Typography>
             </div>
             <Typography
@@ -61,7 +64,7 @@ const ProductListDetailsHeader = props => {
               color="textSecondary"
               variant="body1"
             >
-              Medium | Practically New | Chic | Black
+              {lists.size}
             </Typography>
           </div>
           <Typography
@@ -69,10 +72,11 @@ const ProductListDetailsHeader = props => {
               color="primary"
               variant="h3"
             >
-              $20 / day
+              ${lists.price} / day
             </Typography>
         </div>
-      </CardContent>
+      </CardContent> : '' )}
+      
     </Card>
   );
 };

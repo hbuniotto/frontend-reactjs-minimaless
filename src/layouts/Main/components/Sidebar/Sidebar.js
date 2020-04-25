@@ -58,11 +58,11 @@ const Sidebar = props => {
     //   href: '/dashboard', // create route and model for dashboard
     //   icon: <DashboardIcon />
     // },
-    {
-      title: 'Community',
-      href: '/users',
-      icon: <PeopleIcon />
-    },
+    // {
+    //   title: 'Community',
+    //   href: '/users',
+    //   icon: <PeopleIcon />
+    // },
     // {
     //   title: 'Authentication',
     //   href: '/signin',
@@ -78,11 +78,11 @@ const Sidebar = props => {
     //   href: '/icons',
     //   icon: <ImageIcon />
     // },
-    {
-      title: 'Settings',
-      href: '/settings',
-      icon: <SettingsIcon />
-    }
+    // {
+    //   title: 'Settings',
+    //   href: '/settings',
+    //   icon: <SettingsIcon />
+    // }
   ];
 
   return (

@@ -237,7 +237,7 @@ const SignUp = props => {
       email: formState.values.email,
       password: formState.values.password
     }
-    Axios.post('http://localhost:3001/api/signup', userData)
+    Axios.post('/api/signup', userData)
     .then(res => {
       const { token } = res.data;
       userAuthentication(token)

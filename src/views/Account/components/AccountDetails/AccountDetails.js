@@ -1,5 +1,6 @@
 
 // NEED TO ADD MY LISTINGS HERE
+// WON'T USE THIS PART
 
 import React, { useState } from 'react';
 import clsx from 'clsx';
@@ -138,7 +139,7 @@ const AccountDetails = props => {
           <Button
             className={classes.uploadButton}
             color="primary"
-            variant="text"
+            variant="outlined"
             type='submit'
             onSubmit={handleUpdate}
           >

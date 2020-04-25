@@ -9,6 +9,16 @@ const useStyles = makeStyles(() => ({
   root: {},
   body: {
     marginLeft: 20,
+  },
+  slider: {
+    width: '100%',
+    height: '100%',
+    border: '2px solid black'
+  },
+  sliderimg: {
+    backgroundColor: 'red',
+    height: 150,
+    // width: 100
   }
 }));
 
@@ -27,9 +37,9 @@ const ProductImage = props => {
 
   return (
 
-    <Slider {...settings} className="slider">
+    <Slider {...settings} className={classes.slider}>
         {images.map(image => (
-        <img className="sliderImage" alt="Remy Sharp" src={image.url} />
+        <img key={image.public_id} className={classes.sliderimg} alt="Remy Sharp" src={image.url} />
         ))}
     </Slider>
 

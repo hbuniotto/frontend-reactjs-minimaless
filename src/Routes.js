@@ -49,7 +49,7 @@ const Routes = () => {
         component={ProductDetailsView}
         exact
         layout={MainLayout}
-        path="/products/listingdetails"
+        path="/listings/:id"
       />
       <RouteWithLayout
         component={TypographyView}

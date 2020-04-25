@@ -21,7 +21,7 @@ const useStyles = theme => ({
     root: {},
     text: {
         textAlign: 'center',
-        padding: 20
+        padding: 20,
     },
     input: {
         display: 'none',
@@ -69,7 +69,7 @@ class Pictures extends Component {
         }
         formData.append("file",e.target.files[0]);
 
-        Axios.post('http://localhost:3001/api/listings/uploadimage',formData,config)
+        Axios.post('/api/listings/uploadimage',formData,config)
         .then(response => {
  
              this.setState({
@@ -86,7 +86,7 @@ class Pictures extends Component {
 
      onRemove = (id) => {
         this.setState({uploading:true});
-        Axios.get(`http://localhost:3001/api/listings/removeimage?public_id=${id}`).then(response=>{
+        Axios.get(`/api/listings/removeimage?public_id=${id}`).then(response=>{
             let images = this.state.uploadedFiles.filter(item=>{
                 return item.public_id !== id;
             });
@@ -99,11 +99,14 @@ class Pictures extends Component {
             })
         })
     }
+    
 
     classes = useStyles();
 
     render() {
-        const { classes } = this.props;
+        const { images } = this.props.formState;
+        const { classes} = this.props
+        console.log(this.state.uploadedFiles)
         return (
             <div>
             <Grid
@@ -145,6 +148,22 @@ class Pictures extends Component {
                       </Button>
                   </label>
                   </div>
+                  {images.length !== 5 ? (<Typography
+                    style={{color: 'red'}}
+                    className={classes.text}
+                    color="textSecondary"
+                    variant="body1"
+                    >
+                    Please Upload Your 5 Pictures.
+                </Typography>) : (<Typography
+                    className={classes.text}
+                    style={{color: 'green'}}
+                    color="textSecondary"
+                    variant="body1"
+                    >
+                    Congratulations! 5 pictures uploaded successfully.
+                </Typography>)}
+                
               </Grid>
               <Grid
                 style={{margin: '0 auto'}}
@@ -152,6 +171,7 @@ class Pictures extends Component {
                 md={12}
                 xs={12}
               >
+                  
                 {this.state.uploading ?  <div style={{textAlign: 'center'}}><CircularProgress /></div> : '' }               
 
                 {this.state.uploadedFiles.length > 0 ? (
@@ -167,13 +187,7 @@ class Pictures extends Component {
                             </div>
                         ))}
                     </div>
-                  ) : <Typography
-                        className={classes.text}
-                        color="textSecondary"
-                        variant="body1"
-                        >
-                        Please Upload Your Pictures.
-                    </Typography>
+                  ) : ''
                 }
               </Grid>
             </Grid>

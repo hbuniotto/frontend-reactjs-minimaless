@@ -206,7 +206,7 @@ const SignIn = props => {
       password: formState.values.password
     }
 
-    Axios.post('http://localhost:3001/api/login', userData)
+    Axios.post('/api/login', userData)
     .then(res => {
       const { token } = res.data;
       userAuthentication(token)

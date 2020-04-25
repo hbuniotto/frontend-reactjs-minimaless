@@ -24,21 +24,21 @@ const ProductListItem = (props) => {
         spacing={2}
       >
         <Grid
-          className={classes.ProductItem}
+          // className={classes.ProductItem}
           item
-          md={6}
+          md={12}
           xs={12}
         >
           <ProductItem products={props.products} />
         </Grid>
 
-        <Grid
+        {/* <Grid
           item
           md={6}
           xs={12}
         >
           <Map />
-        </Grid>
+        </Grid> */}
       </Grid>
     </div>
   );

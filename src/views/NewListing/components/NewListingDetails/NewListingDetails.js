@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, formatMs } from '@material-ui/core/styles';
 import ListDetails from './components/ListDetails'
 import Pictures from './components/Pictures';
 import PriceList from './components/PriceList';
@@ -39,6 +39,7 @@ const NewListingDetails = (props) => {
     values: {
       title: '',
       brand: '',
+      description: '',
       size: '',
       condition: '',
       category: '',
@@ -62,6 +63,7 @@ const NewListingDetails = (props) => {
     const listingData = {
       title: formState.values.title,
       brand: formState.values.brand,
+      description: formState.values.description,
       size: formState.values.size,
       condition: formState.values.condition,
       category: formState.values.category,
@@ -70,7 +72,7 @@ const NewListingDetails = (props) => {
       price: formState.values.price,
       images: formState.images
     }
-    Axios.post('http://localhost:3001/api/listings', listingData)
+    Axios.post('/api/listings', listingData)
       .then(res => {
         setTimeout(() => {
           props.history.push('/listings')
@@ -87,9 +89,9 @@ const NewListingDetails = (props) => {
   };
 
   const isFormValid = (data) => {
-    const {title, brand, size, condition, category, occasion, color} = data
+    const {title, brand, description, size, condition, category, occasion, color} = data
 
-    if(!title || !brand || !size || !condition || !category || !occasion || !color) {
+    if(!title || !brand || !description || !size || !condition || !category || !occasion || !color) {
       return true
     }
     return false
@@ -104,8 +106,6 @@ const NewListingDetails = (props) => {
       errors: errors || {}
     }));
   }, [formState.values]);
-
-
 
   const handleChange = event => {
     event.persist();
@@ -133,7 +133,7 @@ const NewListingDetails = (props) => {
       case 0:
         return <ListDetails handleChange={handleChange} formState={formState} />;
       case 1:
-        return <Pictures imagesHandler={images => imagesHandler(images)} reset={formState.imagasSuccess} />;
+        return <Pictures formState={formState} imagesHandler={images => imagesHandler(images)} reset={formState.imagasSuccess} />;
       case 2:
         return <PriceList handleChange={handleChange} formState={formState} />;
       default:
@@ -180,7 +180,7 @@ const NewListingDetails = (props) => {
               <Button
                 variant="contained"
                 color="primary"
-                disabled={!formState.images.length > 0}
+                disabled={formState.images.length !== 5}
                 onClick={handleNext}
                 className={classes.buttonNext}
               >Next</Button> : ''

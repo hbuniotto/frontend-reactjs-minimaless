@@ -29,7 +29,7 @@ const ProductItem = props => {
   const [lodingData, setlodingData] = useState(false)
 
   useEffect(() => {
-    Axios.get('http://localhost:3001/api/listings')
+    Axios.get('/api/listings')
       .then(res => {
         setlodingData(true)
         setListingData(res.data.lists)
@@ -46,11 +46,11 @@ const ProductItem = props => {
                  No results found
                 </Typography> : listingsData.map((lists, i) => (
                 <Grid key={i} container spacing={1}>
-                    <Grid className={classes.item} item sm={6} xs={12}>
+                    <Grid className={classes.item} item sm={6} md={3} xs={12}>
                       <ProductImage lists={lists} products={products} />
                     </Grid>
 
-                    <Grid className={classes.item2} item sm={6} xs={12} >
+                    <Grid className={classes.item2} item sm={6} md={9} xs={12} >
                       <ProductDescription lists={lists} />
                     </Grid>
                 </Grid>

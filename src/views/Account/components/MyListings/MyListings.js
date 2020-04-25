@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center'
   },
   description: {
-    paddingLeft: 20,
+    paddingLeft: 45,
   }
 }));
 
@@ -72,20 +72,7 @@ const AccountProfile = props => {
             </Grid>  
             <Grid item md={4} xs={12}>
             <CardActions className={classes.btnstyle}>
-            <div className={classes.activeInactive}>
-            <Button
-              color="primary"
-              variant="text"
-            >
-              Active
-            </Button>
-            <Button
-              color="primary"
-              variant="text"
-            >
-              Inactive
-            </Button>
-            </div>
+            
             <Button
               color="primary"
               variant="contained"
@@ -111,8 +98,9 @@ const AccountProfile = props => {
             <Grid
               className={classes.image}
               item
+              lg={1}
               md={1}
-              xs={12}
+              xs={9}
             >
             <img className={classes.productImg} src={product.avatar} alt="product" />
             </Grid>
@@ -124,7 +112,7 @@ const AccountProfile = props => {
             >
             <Typography
               gutterBottom
-              variant="h3"
+              variant="h5"
               >Black suit</Typography>
 
               <Typography
@@ -135,11 +123,12 @@ const AccountProfile = props => {
               
               <Typography
               gutterBottom
-              variant="h5"
+              variant="h6"
               >Medium | Practically New | Chic | Black</Typography>
             </Grid>
             <Grid
               item
+              lg={3}
               md={3}
               xs={12}
             >
@@ -151,21 +140,20 @@ const AccountProfile = props => {
                 >$20 / day</Typography>
                 <CardActions className={classes.btnstyle}>
                     <Button
-                      className={classes.uploadButton}
-                      color="primary"
-                      variant="text"
-                    >
-                      MAKE IT INACTIVE
-                    </Button>
-                    <Button
                       // className={classes.uploadButton}
                       color="primary"
-                      variant="text"
+                      variant="outlined"
                     >
-                      Update
+                      UPDATE
+                    </Button>
+                    <Button
+                      className={classes.uploadButton}
+                      variant="text"
+                      color="primary"
+                    >
+                      DELETE
                     </Button>
                 </CardActions> 
-
             </Grid>
           </Grid>
         </CardContent>

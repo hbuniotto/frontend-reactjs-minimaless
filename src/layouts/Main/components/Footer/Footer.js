@@ -27,7 +27,7 @@ const Footer = props => {
           href="https://www.ironhack.com/en/web-development/miami"
           target="_blank"
         >
-          Designed and Developed with <span>❤️️</span>at Ironhack Miami 
+          Designed and Developed with <span>❤️️</span> at Ironhack Miami 
         </Link>
           
       </Typography>

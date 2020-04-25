@@ -14,29 +14,13 @@ import EmailIcon from '@material-ui/icons/Email';
 
 const useStyles = makeStyles(theme => ({
   root: {},
-  leftimg: {
-    textAlign: 'center'
-  },
-  leftimg1: {
-    height: 300,
-    width: '100%',
-    border: '1px solid black',
-    borderRadius: 10
-},
-rightimgbody: {
-  display: 'flex'
-},
-rightimgarea: {
-  marginRight: 10,
-  marginBottom: 10,
-},
-rightimg1: {
-  height: 140,
-  width: '100%',
-  boxSizing: 'border-box',
-  border: '1px solid black',
-  borderRadius: 5
+avatar: {
+  height: 110,
+  width: 100,
+  flexShrink: 0,
+  flexGrow: 0
 }
+  
 }));
 
 const ProductListDetailsHeader = props => {
@@ -51,18 +35,18 @@ const ProductListDetailsHeader = props => {
       {...rest}
       className={clsx(classes.root, className)}
     >
-      <CardContent style={{minHeight: 300}}>
+      <CardContent style={{minHeight: 200}}>
           <Grid
             container
             spacing={3}
           >
             <Grid
               item
-              md={6}
+              md={12}
               xs={12}
             >
             <div style={{display: 'flex'}}>
-            <Avatar alt="Remy Sharp" src={avatar.avatar1} />
+            <Avatar className={classes.avatar} alt="Remy Sharp" src={avatar.avatar1} />
             <div style={{marginLeft: 15, marginBottom: 20}}>
               <Typography
                 gutterBottom
@@ -98,17 +82,8 @@ const ProductListDetailsHeader = props => {
               </div>
             </div>
             </div>
-
-            <div>
-            <Typography
-              color="textSecondary"
-              variant="body2"
-            >
-              You can call, text or email Humberto to arrange pick up and payment of this listing. We want to be mindful of everyone's personal time so we recommend contacting owners between 9 AM and 6 PM.
-            </Typography>
-            </div>
             </Grid>
-            <Grid
+            {/* <Grid
               item
               md={6}
               xs={12}
@@ -119,7 +94,7 @@ const ProductListDetailsHeader = props => {
             >
               Map Loading...
             </Typography>
-            </Grid>
+            </Grid> */}
           </Grid>
         </CardContent>
     </Card>

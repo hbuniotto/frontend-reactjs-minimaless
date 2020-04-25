@@ -8,7 +8,8 @@ import {
   TextField,
   Grid,
   NativeSelect,
-  Typography
+  Typography,
+  TextareaAutosize
 } from '@material-ui/core';
 
 
@@ -25,7 +26,7 @@ const ListDetails = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
-const {title, brand, size, condition, category, occasion, color} = props.formState.values
+const {title, brand, description, size, condition, category, occasion, color} = props.formState.values
   return (
     <form>
           <Grid
@@ -87,6 +88,41 @@ const {title, brand, size, condition, category, occasion, color} = props.formSta
                   onChange={props.handleChange}
                   type="text"
                   value={brand || ''}
+              />
+            </Grid>
+            <Grid
+              style={{margin: '0 auto'}}
+              item
+              md={7}
+              xs={12}
+            >
+              {/* <TextField
+                fullWidth
+                label="Description"
+                placeholder="Description"
+                margin="dense"
+                name="description"
+                required
+                variant="outlined"
+
+                className={classes.textField}
+                onChange={props.handleChange}
+                type="text"
+                value={description || ''}
+              /> */}
+              <TextareaAutosize
+                style={{width: '100%'}}
+                rowsMin={3}
+                aria-label="minimum height"
+                placeholder=" Description here"
+                name="description"
+                required
+                variant="outlined"
+
+                className={classes.textField}
+                onChange={props.handleChange}
+                type="text"
+                value={description || ''}
               />
             </Grid>
             <Grid

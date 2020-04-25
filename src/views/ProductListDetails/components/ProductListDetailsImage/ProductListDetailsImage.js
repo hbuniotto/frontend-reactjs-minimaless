@@ -47,12 +47,13 @@ const ProductListDetailsHeader = props => {
     avatar4: '/images/products/product_4.png',
     avatar5: '/images/products/product_5.png',
   };
+  console.log(props.listingsData)
   return (
     <Card
       {...rest}
       className={clsx(classes.root, className)}
     >
-      <CardContent>
+      {props.listingsData.map(lists => lists._id === props.id ?  <CardContent key={lists._id}>
           <Grid
             container
             spacing={3}
@@ -63,7 +64,7 @@ const ProductListDetailsHeader = props => {
               md={6}
               xs={12}
             >
-            <img className={classes.leftimg1} src={product.avatar1} alt="product" />
+            <img className={classes.leftimg1} src={lists.images[0].url} alt="product" />
             </Grid>
             <Grid
               className={classes.rightimgbody}
@@ -77,10 +78,10 @@ const ProductListDetailsHeader = props => {
               xs={6}
             >
                 <div className={classes.rightimgarea}>
-                  <img className={classes.rightimg1} src={product.avatar2} alt="product" />
+                  <img className={classes.rightimg1} src={lists.images[1].url} alt="product" />
                 </div>
                 <div className={classes.rightimgarea}>
-                  <img className={classes.rightimg1} src={product.avatar3} alt="product" />
+                  <img className={classes.rightimg1} src={lists.images[2].url} alt="product" />
                 </div>
             </Grid>
             <Grid
@@ -89,15 +90,16 @@ const ProductListDetailsHeader = props => {
               xs={6}
             >
               <div className={classes.rightimgarea}>
-                <img className={classes.rightimg1} src={product.avatar4} alt="product" />
+                <img className={classes.rightimg1} src={lists.images[3].url} alt="product" />
               </div>
               <div className={classes.rightimgarea}>
-                <img className={classes.rightimg1} src={product.avatar5} alt="product" />
+                <img className={classes.rightimg1} src={lists.images[4].url} alt="product" />
               </div>
             </Grid>
             </Grid>
           </Grid>
-        </CardContent>
+        </CardContent> : '')}
+      
     </Card>
   );
 };
