@@ -25,15 +25,15 @@ const Routes = () => {
       <Redirect
         exact
         from="/"
-        to="/signup"
+        to="/login"
       />
-      <RouteWithLayout
+      {/* <RouteWithLayout
         component={DashboardView}
         exact
         layout={MainLayout}
         path="/dashboard"
       />
-      <RouteWithLayout
+      <RouteWithLayout */}
         component={UserListView}
         exact
         layout={MainLayout}

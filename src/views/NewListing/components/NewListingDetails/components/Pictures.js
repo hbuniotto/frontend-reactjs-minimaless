@@ -149,19 +149,19 @@ class Pictures extends Component {
                   </label>
                   </div>
                   {images.length !== 5 ? (<Typography
-                    style={{color: 'red'}}
+                    style={{color: 'blue'}}
                     className={classes.text}
                     color="textSecondary"
                     variant="body1"
                     >
-                    Please Upload Your 5 Pictures.
+                    You can upload up to 5 images. Your fist uploaded image will be shown as your featured picture in listings.
                 </Typography>) : (<Typography
                     className={classes.text}
                     style={{color: 'green'}}
                     color="textSecondary"
                     variant="body1"
                     >
-                    Congratulations! 5 pictures uploaded successfully.
+                    Cool stuff<span>👌</span> Click Next to continue or upload a few more pictures
                 </Typography>)}
                 
               </Grid>
@@ -181,8 +181,7 @@ class Pictures extends Component {
                                 <img className={classes.productImg} src={image.url} alt="product" />
                                 <div className={classes.iconarea}>
                                 <DeleteIcon onClick={()=> this.onRemove(image.public_id)} style={{ fill: 'gray', cursor: 'pointer' }} />
-                                <StarIcon style={{ fill: 'orange' }} /> 
-                                {/* WE NEED TO CREATE A METHOD TO STAR AS FAVORITE IF ORANGE */}
+                            
                                 </div>
                             </div>
                         ))}

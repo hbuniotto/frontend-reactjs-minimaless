@@ -137,7 +137,7 @@ const NewListingDetails = (props) => {
       case 2:
         return <PriceList handleChange={handleChange} formState={formState} />;
       default:
-        return 'Unknown step';
+        return 'What are you trying to do!?';
     }
   }
 

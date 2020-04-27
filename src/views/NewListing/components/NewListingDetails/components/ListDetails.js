@@ -110,11 +110,13 @@ const {title, brand, description, size, condition, category, occasion, color} = 
                 type="text"
                 value={description || ''}
               /> */}
-              <TextareaAutosize
+              <TextField
+                fullWidth
+                label="Description"
                 style={{width: '100%'}}
-                rowsMin={3}
+                rowsMin={10}
                 aria-label="minimum height"
-                placeholder=" Description here"
+                placeholder="Sharing my cool leather jacket with the world"
                 name="description"
                 required
                 variant="outlined"
@@ -223,6 +225,7 @@ const {title, brand, description, size, condition, category, occasion, color} = 
                     <option value='Business'>Business</option>
                     <option value='Casual'>Casual</option>
                     <option value='Athleisure'>Athleisure</option>
+                    <option value='Athleisure'>Other</option>
                     </NativeSelect>
                 </FormControl>
             </Grid>

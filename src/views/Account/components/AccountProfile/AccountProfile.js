@@ -22,17 +22,21 @@ const useStyles = makeStyles(theme => ({
     display: 'flex'
   },
   avatar: {
-    marginLeft: 'auto',
+    marginLeft: 15,
     height: 110,
     width: 100,
     flexShrink: 0,
     flexGrow: 0
   },
-  progress: {
-    marginTop: theme.spacing(3)
+  
+  uploadPictureButton: {
+    marginLeft: theme.spacing(3)
+    
   },
-  uploadButton: {
-    marginRight: theme.spacing(3)
+
+  updateButton : {
+    marginLeft: theme.spacing(1)
+    
   }
 }));
 
@@ -50,13 +54,13 @@ const AccountProfile = props => {
   };
 
   const [values, setValues] = useState({ // will come from user model
-    firstName: 'Humberto',
-    lastName: 'Buniotto',
-    email: 'humberto@email.com',
-    street: '123 Happy Street',
-    phone: '(123) 456-7890',
-    state: 'Miami Beach',
-    country: 'USA'
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    street: '',
+    city: '',
+    state: ''
   });
 
   const handleChange = event => {
@@ -72,28 +76,29 @@ const AccountProfile = props => {
       firstName: values.firstName,
       lastName: values.lastName,
       email: values.email,
+      phone: values.phone,
       street: values.street,
       city: values.city,
-      phone: values.phone,
       state: values.state,
+      zip: values.zip
     }
     console.log(update)
   }
 
-  const states = [ // this will come from the backend.
-    {
-      value: 'alabama',
-      label: 'Alabama'
-    },
-    {
-      value: 'new-york',
-      label: 'New York'
-    },
-    {
-      value: 'san-francisco',
-      label: 'San Francisco'
-    }
-  ];
+  // const states = [ // this will come from the backend.
+  //   {
+  //     value: 'alabama',
+  //     label: 'Alabama'
+  //   },
+  //   {
+  //     value: 'new-york',
+  //     label: 'New York'
+  //   },
+  //   {
+  //     value: 'san-francisco',
+  //     label: 'San Francisco'
+  //   }
+  // ];
 
   return (
     <Card
@@ -102,51 +107,26 @@ const AccountProfile = props => {
     >
       <CardContent>
         <div className={classes.details}>
-          <div>
-            <Typography
-              gutterBottom
-              variant="h2"
-            >
-              Humberto Buniotto
-            </Typography>
-            <Typography
-              className={classes.locationText}
-              color="textSecondary"
-              variant="body1"
-            >
-              {user.city}, {user.country}
-            </Typography>
-            <Typography
-              className={classes.dateText}
-              color="textSecondary"
-              variant="body1"
-            >
-              {moment().format('hh:mm A')} ({user.timezone})
-            </Typography>
-          </div>
           <Avatar
             className={classes.avatar}
             src={user.avatar}
           />
           
-        </div>
-        
-      </CardContent>
-      <Divider />
-      <CardActions>
-        <Button
-          className={classes.uploadButton}
+          <div>
+            <Button
+          className={classes.uploadPictureButton}
           color="primary"
           variant="outlined"
         >
           UPLOAD PICTURE
         </Button>
+          </div>
+        </div>
         
-      </CardActions>
+      </CardContent>
       <Divider />
       <CardContent>
       <form autoComplete="off" onSubmit={handleUpdate}>
-        <Divider />
         <CardContent>
           
           <Grid
@@ -167,6 +147,7 @@ const AccountProfile = props => {
                 required
                 value={values.firstName}
                 variant="outlined"
+                placeholder='John'
               />
             </Grid>
             <Grid
@@ -183,6 +164,42 @@ const AccountProfile = props => {
                 required
                 value={values.lastName}
                 variant="outlined"
+                placeholder='text'
+                placeholder='Doe'
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Phone Number"
+                margin="dense"
+                name="phone"
+                onChange={handleChange}
+                required
+                value={values.phone}
+                variant="outlined"
+                placeholder='(305) 555-1234'
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Email Address"
+                margin="dense"
+                name="email"
+                onChange={handleChange}
+                required
+                value={values.email}
+                variant="outlined"
+                placeholder='you@email.com'
               />
             </Grid>
             <Grid
@@ -199,14 +216,32 @@ const AccountProfile = props => {
                 required
                 value={values.street}
                 variant="outlined"
+                placeholder='100 Happy Street'
               />
             </Grid>
             <Grid
               item
-              md={6}
+              md={4}
               xs={12}
             >
               <TextField
+                fullWidth
+                label="City"
+                margin="dense"
+                name="city"
+                onChange={handleChange}
+                required
+                value={values.city}
+                variant="outlined"
+                placeholder='(305) 555-1234'
+              />
+            </Grid>
+            <Grid
+              item
+              md={4}
+              xs={12}
+            >
+              <TextField // need to make this a dropdown with states from backend
                 fullWidth
                 label="State"
                 margin="dense"
@@ -219,7 +254,7 @@ const AccountProfile = props => {
             </Grid>
             <Grid
               item
-              md={6}
+              md={4}
               xs={12}
             >
               <TextField
@@ -234,44 +269,13 @@ const AccountProfile = props => {
                 variant="outlined"
               />
             </Grid>
-            <Grid
-              item
-              md={12}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Phone Number"
-                margin="dense"
-                name="phone"
-                onChange={handleChange}
-                required
-                value={values.phone}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={12}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Email Address"
-                margin="dense"
-                name="email"
-                onChange={handleChange}
-                required
-                value={values.email}
-                variant="outlined"
-              />
-            </Grid>
+            
           </Grid>
         </CardContent>
         <Divider />
         <CardActions>
           <Button
-            className={classes.uploadButton}
+            className={classes.updateButton}
             color="primary"
             variant="outlined"
             type='submit'

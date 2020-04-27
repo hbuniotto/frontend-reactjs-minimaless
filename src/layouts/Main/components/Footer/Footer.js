@@ -22,12 +22,13 @@ const Footer = props => {
     >
       <Typography variant="body1">
         &copy;{' '}
+        Designed and Developed with <span>❤️️</span> at <span> </span>
         <Link
           component="a"
           href="https://www.ironhack.com/en/web-development/miami"
           target="_blank"
         >
-          Designed and Developed with <span>❤️️</span> at Ironhack Miami 
+          Ironhack Miami 
         </Link>
           
       </Typography>
