@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
-import Slide from '@material-ui/core/Slide';
+import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
-import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
-import { Typography } from '@material-ui/core';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {},
@@ -31,18 +30,13 @@ const AlertNotify = (props) => {
 
     setTimeout(() => {
         setAlert(false)
-    }, 2000);
+    }, 3000);
     
   return (
       <div className={classes.wrapper}>
-        <Slide direction="left" in={alert} mountOnEnter unmountOnExit>
-            <div className={classes.alertNotify}>
-            <CheckCircleRoundedIcon className={classes.successicon} />
-            <div>
-                <Typography variant="h6">Yay, your listing has been created!</Typography>
-            </div>
-        </div>
-        </Slide>
+        <Alert variant="filled" severity="success">
+            Yay, your listing has been created!
+        </Alert>
       </div>
   );
 }

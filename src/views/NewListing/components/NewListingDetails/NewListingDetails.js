@@ -51,8 +51,6 @@ const NewListingDetails = (props) => {
     imagasSuccess: false
   });
 
-
-
   const steps = getSteps();
 
   const handleNext = () => {
@@ -76,7 +74,7 @@ const NewListingDetails = (props) => {
       .then(res => {
         setTimeout(() => {
           props.history.push('/listings')
-        }, 2000);
+        }, 3000);
       })
       .catch(err => {
         console.log(err)

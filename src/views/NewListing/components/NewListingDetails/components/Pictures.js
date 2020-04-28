@@ -40,13 +40,13 @@ const useStyles = theme => ({
     },
     productImg: {
         height: 120,
-        width: 150,
+        width: 180,
     },
     iconarea: {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: '60%',
+        width: 'auto',
         marginLeft: '20%'
     }
 });
@@ -154,14 +154,14 @@ class Pictures extends Component {
                     color="textSecondary"
                     variant="body1"
                     >
-                    You can upload up to 5 images. Your fist uploaded image will be shown as your featured picture in listings.
+                    Upload at least 5 pictures. Your fist uploaded picture will be shown as your featured image in listings.
                 </Typography>) : (<Typography
                     className={classes.text}
                     style={{color: 'green'}}
                     color="textSecondary"
                     variant="body1"
                     >
-                    Cool stuff<span>👌</span> Click Next to continue or upload a few more pictures
+                    Cool stuff<span>👌</span> Click Next to continue
                 </Typography>)}
                 
               </Grid>
@@ -180,8 +180,9 @@ class Pictures extends Component {
                             <div key={i} className={classes.imageBody}>
                                 <img className={classes.productImg} src={image.url} alt="product" />
                                 <div className={classes.iconarea}>
-                                <DeleteIcon onClick={()=> this.onRemove(image.public_id)} style={{ fill: 'gray', cursor: 'pointer' }} />
-                            
+                                <DeleteIcon onClick={()=> this.onRemove(image.public_id)} 
+                                style={{ fill: 'gray', 
+                                cursor: 'pointer' }} />
                                 </div>
                             </div>
                         ))}

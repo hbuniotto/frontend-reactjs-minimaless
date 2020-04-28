@@ -42,8 +42,8 @@ const ProductItem = props => {
 
   return (
     <div className={classes.body}>
-              {listingsData.length === 0 ? <Typography variant="h3" gutterBottom>
-                 No results found
+              {listingsData.length === 0 ? <Typography variant="h4" gutterBottom>
+                Oops...no listing available <span>😬</span>
                 </Typography> : listingsData.map((lists, i) => (
                 <Grid key={i} container spacing={1}>
                     <Grid className={classes.item} item sm={6} md={3} xs={12}>

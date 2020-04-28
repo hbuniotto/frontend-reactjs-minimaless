@@ -8,16 +8,18 @@ import Slider from "react-slick";
 const useStyles = makeStyles(() => ({
   root: {},
   body: {
-    marginLeft: 20,
+    marginLeft: 0,
+    
   },
   slider: {
     width: '100%',
     height: '100%',
-    border: '2px solid black'
+    border: 'none',
   },
   sliderimg: {
     backgroundColor: 'red',
-    height: 150,
+    height: 200,
+    borderRadius: 5
     // width: 100
   }
 }));

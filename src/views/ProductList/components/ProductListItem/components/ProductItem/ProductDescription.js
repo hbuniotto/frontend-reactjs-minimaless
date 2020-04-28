@@ -63,6 +63,7 @@ const ProductDescription = props => {
   const {brand,description, price, size, title, _id} = props.lists
   return (
     <Link to={`/listings/${_id}`}>
+      <br></br>
     <div className={classes.body}>
       <Typography className={classes.suit}>
         {title}

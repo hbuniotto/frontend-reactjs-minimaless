@@ -11,14 +11,16 @@ import {
 
 const useStyles = makeStyles(theme => ({
   root: {},
-  leftimg: {
-    textAlign: 'center'
+  featuredImage: {
+    textAlign: 'center',
+    height: 320,
   },
-  leftimg1: {
-    height: 300,
+  featuredImage1: {
+    height: 320,
     width: '100%',
-    border: '1px solid black',
-    borderRadius: 10
+    border: 'none',
+    borderRadius: 5,
+    marginBottom: 10,
 },
 rightimgbody: {
   display: 'flex'
@@ -28,10 +30,10 @@ rightimgarea: {
   marginBottom: 10,
 },
 rightimg1: {
-  height: 140,
+  height: 152,
   width: '100%',
-  boxSizing: 'border-box',
-  border: '1px solid black',
+  // boxSizing: 'border-box',
+  border: 'none',
   borderRadius: 5
 }
 }));
@@ -59,12 +61,12 @@ const ProductListDetailsHeader = props => {
             spacing={3}
           >
             <Grid
-            className={classes.leftimg}
+            className={classes.featuredImage}
               item
               md={6}
               xs={12}
             >
-            <img className={classes.leftimg1} src={lists.images[0].url} alt="product" />
+            <img className={classes.featuredImage1} src={lists.images[0].url} alt="product" />
             </Grid>
             <Grid
               className={classes.rightimgbody}

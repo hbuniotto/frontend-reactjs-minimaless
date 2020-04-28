@@ -116,7 +116,7 @@ const {title, brand, description, size, condition, category, occasion, color} = 
                 style={{width: '100%'}}
                 rowsMin={10}
                 aria-label="minimum height"
-                placeholder="Sharing my cool leather jacket with the world"
+                placeholder="My cool jacket is in great condition..."
                 name="description"
                 required
                 variant="outlined"
