@@ -73,9 +73,20 @@ const ProductDescription = props => {
       <span>{size}</span>
       {/* <span>{size}</span> | <span>Practically New</span> | <span>Chic</span> | <span>Black</span>  */}
       </Typography>
-      <Typography className={classes.description}>
-        {description}
-      </Typography>
+      
+      <div className={classes.description}>
+        {description.length > 150 ? (
+          <Typography>
+            {description.slice(0, 150)} <span style={{color: 'blue'}}>...read more</span> 
+          </Typography>
+          ) : (
+          <Typography>
+            {description} 
+          </Typography>
+          ) 
+        }
+      </div>
+
       <div className={classes.avatar}>
       <Avatar alt="Remy Sharp" src="/images/avatars/humberto.jpg" />
           <Typography className={classes.avatarName}>

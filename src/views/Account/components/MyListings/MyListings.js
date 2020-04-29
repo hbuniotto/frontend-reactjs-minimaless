@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
@@ -11,6 +11,8 @@ import {
   Button,
   Grid
 } from '@material-ui/core';
+import Axios from 'axios';
+import { withRouter, Link } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -26,11 +28,11 @@ const useStyles = makeStyles(theme => ({
   },
   price: {
     textAlign: 'right',
-    paddingRight: 35
   },
   productImg: {
     height: 80,
     width: 80,
+    borderRadius: 5
   },
   productDetail: {
     display: 'flex',
@@ -47,12 +49,72 @@ const useStyles = makeStyles(theme => ({
 
 const AccountProfile = props => {
   const { className, ...rest } = props;
-
   const classes = useStyles();
 
+
+  const [listingsData, setListingData] = useState([])
+  const [loadingData, setLaodingData] = useState(false)
+  const [id, setId] = useState()
+
+  useEffect(() => {
+    Axios.get('/api/listings')
+      .then(res => {
+        setLaodingData(true)
+        setListingData(res.data.lists)
+        setLaodingData(false)
+      }).catch(err => {
+        console.log(err)
+        setLaodingData(false)
+      })
+  }, [id])
+
+  // const handleDelete = (id) => {
+  //   console.log(id)
+  //   setLaodingData(true)
+  //   Axios.delete(`api/listings/${id}`).then(res => {
+  //     console.log('delete')
+  //     setId(id)
+  //   setLaodingData(false)
+  //   }).catch(err => {
+  //     console.log(err)
+  //     setLaodingData(false)
+  //   })
+
+  // }
+
+  const handleDelete = (list) => {
+    let public_id = [];
+    list.images.map(image => {
+      public_id.push(image.public_id)
+    })
+
+    console.log(public_id)
+    Axios.delete(`/api/deleteimage?public_id=${public_id}`)
+    .then(res => {
+      console.log(res)
+    }).catch(err => {
+      console.log(err)
+    }) 
+
+    setLaodingData(true)
+    Axios.delete(`api/listings/${list._id}`).then(res => {
+      console.log('delete')
+      setId(list._id)
+    setLaodingData(false)
+    }).catch(err => {
+      console.log(err)
+      setLaodingData(false)
+    })
+
+  }
+
+  // console.log(listingsData)
+  // console.log(lodingData)
+
   const product = {
-    avatar: '/images/products/product_4.png'
+    blank: '/images/products/blank.jpg'
   };
+
 
   return (
     <Card
@@ -88,9 +150,10 @@ const AccountProfile = props => {
       </CardContent>
       <Divider />
 
-      <div>
+    {listingsData.map((list, i) => (
+      <div key={list._id}>
         <Divider />
-        <CardContent>
+        <CardContent>     
           <Grid
             container
             className={classes.productDetail}
@@ -102,34 +165,44 @@ const AccountProfile = props => {
               md={1}
               xs={9}
             >
-            <img className={classes.productImg} src={product.avatar} alt="product" />
+            <img className={classes.productImg} src={ list.images[0] ? list.images[0].url : product.blank} alt="product" />
             </Grid>
             <Grid
               className={classes.description}
               item
-              md={8}
+              md={6}
               xs={12}
-            >
-            <Typography
-              gutterBottom
-              variant="h5"
-              >Black suit</Typography>
+            > 
+              <Typography
+                gutterBottom
+                variant="h5"
+              >
+                {/* Black suit */}
+                {list.title}
+              </Typography>
 
               <Typography
-              gutterBottom
-              variant="h6"
-              color="textSecondary"
-              >HUGO BOSS</Typography>
+                gutterBottom
+                variant="h6"
+                style={{textTransform: 'uppercase'}}
+                color="textSecondary"
+              >
+                {/* HUGO BOSS */}
+                {list.brand}
+              </Typography>
               
               <Typography
-              gutterBottom
-              variant="h6"
-              >Medium | Practically New | Chic | Black</Typography>
+                gutterBottom
+                variant="h6"
+              >
+                {/* Medium | Practically New | Chic | Black */}
+                {list.size}
+              </Typography>
             </Grid>
             <Grid
               item
               lg={3}
-              md={3}
+              md={5}
               xs={12}
             >
             <Typography
@@ -137,8 +210,9 @@ const AccountProfile = props => {
                 gutterBottom
                 variant="h4"
                 color="primary"
-                >$20 / day</Typography>
+                >${list.price} / day</Typography>
                 <CardActions className={classes.btnstyle}>
+                  <Link to={`/account/newlisting/edit/${list._id}`}>
                     <Button
                       // className={classes.uploadButton}
                       color="primary"
@@ -146,20 +220,22 @@ const AccountProfile = props => {
                     >
                       UPDATE
                     </Button>
+                  </Link>
                     <Button
-                      className={classes.uploadButton}
+                      style={{color: 'red'}}
                       variant="text"
-                      color="primary"
+                      // color="primary"
+                      onClick={() => handleDelete(list)}
                     >
-                      DELETE
+                      DELETE 
                     </Button>
                 </CardActions> 
             </Grid>
           </Grid>
         </CardContent>
       </div>
+      ))}
       <Divider />
-
     </Card>
   );
 };
@@ -168,4 +244,5 @@ AccountProfile.propTypes = {
   className: PropTypes.string
 };
 
-export default AccountProfile;
+export default withRouter(AccountProfile);
+             

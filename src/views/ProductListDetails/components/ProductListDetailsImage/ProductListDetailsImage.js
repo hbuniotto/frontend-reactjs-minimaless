@@ -40,16 +40,12 @@ rightimg1: {
 
 const ProductListDetailsHeader = props => {
   const { className, ...rest } = props;
-
   const classes = useStyles();
+
   const product = {
-    avatar1: '/images/products/product_1.png',
-    avatar2: '/images/products/product_2.png',
-    avatar3: '/images/products/product_3.png',
-    avatar4: '/images/products/product_4.png',
-    avatar5: '/images/products/product_5.png',
+    blank: '/images/products/blank.jpg'
   };
-  console.log(props.listingsData)
+  // console.log(props.listingsData)
   return (
     <Card
       {...rest}
@@ -66,7 +62,7 @@ const ProductListDetailsHeader = props => {
               md={6}
               xs={12}
             >
-            <img className={classes.featuredImage1} src={lists.images[0].url} alt="product" />
+            <img className={classes.featuredImage1} src={ lists.images[0] ? lists.images[0].url : product.blank} alt="product" />
             </Grid>
             <Grid
               className={classes.rightimgbody}
@@ -80,10 +76,10 @@ const ProductListDetailsHeader = props => {
               xs={6}
             >
                 <div className={classes.rightimgarea}>
-                  <img className={classes.rightimg1} src={lists.images[1].url} alt="product" />
+                  <img className={classes.rightimg1} src={ lists.images[1] ? lists.images[1].url : product.blank} alt="product" />
                 </div>
                 <div className={classes.rightimgarea}>
-                  <img className={classes.rightimg1} src={lists.images[2].url} alt="product" />
+                  <img className={classes.rightimg1} src={ lists.images[2] ? lists.images[2].url : product.blank} alt="product" />
                 </div>
             </Grid>
             <Grid
@@ -92,16 +88,15 @@ const ProductListDetailsHeader = props => {
               xs={6}
             >
               <div className={classes.rightimgarea}>
-                <img className={classes.rightimg1} src={lists.images[3].url} alt="product" />
+                <img className={classes.rightimg1} src={ lists.images[3] ? lists.images[3].url : product.blank} alt="product" />
               </div>
               <div className={classes.rightimgarea}>
-                <img className={classes.rightimg1} src={lists.images[4].url} alt="product" />
+                <img className={classes.rightimg1} src={ lists.images[4] ? lists.images[4].url : product.blank} alt="product" />
               </div>
             </Grid>
             </Grid>
           </Grid>
         </CardContent> : '')}
-      
     </Card>
   );
 };

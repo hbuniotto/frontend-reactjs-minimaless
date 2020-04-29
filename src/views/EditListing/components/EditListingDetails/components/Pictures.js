@@ -15,8 +15,6 @@ import StarIcon from '@material-ui/icons/Star';
 
 import Axios from 'axios'
 
-import '../../../../../assets/scss/slider.scss';
-
 const useStyles = theme => ({
     root: {},
     text: {
@@ -58,6 +56,13 @@ class Pictures extends Component {
         uploading: false
     }
 
+    componentDidMount() {
+        const { images } = this.props.formState;
+        this.setState({
+            uploadedFiles: images
+        })
+    }
+
     handleImageChange = (e) => {
         this.setState({uploading:true});
         let formData = new FormData();
@@ -82,6 +87,7 @@ class Pictures extends Component {
      }
 
      onRemove = (id) => {
+         console.log(id)
         this.setState({uploading:true});
         Axios.get(`/api/listings/removeimage?public_id=${id}`).then(response=>{
             let images = this.state.uploadedFiles.filter(item=>{
@@ -93,10 +99,9 @@ class Pictures extends Component {
                 uploading:false
             },()=>{
                 this.props.imagesHandler(images)
-            })
+            })     
         })
     }
-    
 
     classes = useStyles();
 
@@ -104,6 +109,7 @@ class Pictures extends Component {
         const { images } = this.props.formState;
         const { classes} = this.props
         console.log(this.state.uploadedFiles)
+        console.log(images)
         return (
             <div>
             <Grid
@@ -171,21 +177,20 @@ class Pictures extends Component {
                   
                 {this.state.uploading ?  <div style={{textAlign: 'center'}}><CircularProgress /></div> : '' }               
 
-                {this.state.uploadedFiles.length > 0 ? (
+                {images.length > 0 ? (
                     <div className={classes.image}>
-                        {this.state.uploadedFiles.map((image, i )=> (
+                        {images.map((image, i )=> (
                             <div key={i} className={classes.imageBody}>
                                 <img className={classes.productImg} src={image.url} alt="product" />
                                 <div className={classes.iconarea}>
-                                <DeleteIcon onClick={()=> this.onRemove(image.public_id)} 
-                                style={{ fill: 'gray', 
-                                cursor: 'pointer' }} />
+                                <DeleteIcon onClick={()=> this.onRemove(image.public_id)} style={{ fill: 'gray', cursor: 'pointer' }} />
                                 </div>
                             </div>
                         ))}
                     </div>
                   ) : ''
                 }
+
               </Grid>
             </Grid>
         </div>

@@ -13,6 +13,7 @@ import {
   Icons as IconsView,
   Account as AccountView,
   NewListing as NewListView,
+  EditListing as EditListView,
   Settings as SettingsView,
   SignUp as SignUpView,
   SignIn as SignInView,
@@ -32,13 +33,13 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/dashboard"
-      />
-      <RouteWithLayout */}
+      /> */}
+      {/* <RouteWithLayout
         component={UserListView}
         exact
         layout={MainLayout}
         path="/users"
-      />
+      /> */}
       <RouteWithLayout
         component={ProductListView}
         exact
@@ -74,6 +75,12 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/account/newlisting"
+      />
+      <RouteWithLayout
+        component={EditListView}
+        exact
+        layout={MainLayout}
+        path="/account/newlisting/edit/:id"
       />
       <RouteWithLayout
         component={SettingsView}
