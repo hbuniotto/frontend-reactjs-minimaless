@@ -159,6 +159,34 @@ const {title, brand, description, size, condition, category, occasion, color} = 
               item
               md={7}
               xs={12}
+            >
+                <FormControl className={classes.formControl}>
+                    <InputLabel htmlFor="age-native-helper">Color</InputLabel>
+                    <NativeSelect
+                      onChange={props.handleChange}
+                      value={color || ''}
+                      inputProps={{
+                          name: 'color',
+                          id: 'age-native-helper',
+                      }}
+                    >
+                    <option aria-label="None" value="" />
+                    <option value='Black'>Black</option>
+                    <option value='White'>White</option>
+                    <option value='Red'>Red</option>
+                    <option value='Yellow'>Yellow</option>
+                    <option value='Blue'>Blue</option>
+                    <option value='Green'>Green</option>
+                    <option value='Pink'>Pink</option>
+                    <option value='Other'>Other</option>
+                    </NativeSelect>
+                </FormControl>
+            </Grid>
+            <Grid
+              style={{margin: '0 auto'}}
+              item
+              md={7}
+              xs={12}
               required
             >
               <FormControl className={classes.formControl}>
@@ -229,34 +257,7 @@ const {title, brand, description, size, condition, category, occasion, color} = 
                     </NativeSelect>
                 </FormControl>
             </Grid>
-            <Grid
-              style={{margin: '0 auto'}}
-              item
-              md={7}
-              xs={12}
-            >
-                <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="age-native-helper">Color</InputLabel>
-                    <NativeSelect
-                      onChange={props.handleChange}
-                      value={color || ''}
-                      inputProps={{
-                          name: 'color',
-                          id: 'age-native-helper',
-                      }}
-                    >
-                    <option aria-label="None" value="" />
-                    <option value='Black'>Black</option>
-                    <option value='White'>White</option>
-                    <option value='Red'>Red</option>
-                    <option value='Yellow'>Yellow</option>
-                    <option value='Blue'>Blue</option>
-                    <option value='Green'>Green</option>
-                    <option value='Pink'>Pink</option>
-                    <option value='Other'>Other</option>
-                    </NativeSelect>
-                </FormControl>
-            </Grid>
+            
 
           </Grid>
       </form>

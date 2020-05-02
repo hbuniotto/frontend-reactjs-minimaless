@@ -67,14 +67,14 @@ const ProductDescription = props => {
       <span className={classes.suitTitle}>{brand}</span>
       </Typography>
       <Typography className={classes.suitType}>
-      <span>{size}</span> | <span>{color}</span> | <span>{category}</span> | <span>{condition}</span> | <span>{occasion}</span>
+      <span>{size}</span> | <span>{color}</span> | <span>{condition}</span> | <span>{category}</span> | <span>{occasion}</span>
       {/* <span>{size}</span> | <span>Practically New</span> | <span>Chic</span> | <span>Black</span>  */}
       </Typography>
       
       <div className={classes.description}>
-        {description.length > 150 ? (
+        {description.length > 100 ? (
           <Typography>
-            {description.slice(0, 150)} <span style={{color: 'blue'}}>...read more</span> 
+            {description.slice(0, 100)} <span style={{color: 'blue'}}>...read more</span> 
           </Typography>
           ) : (
           <Typography>

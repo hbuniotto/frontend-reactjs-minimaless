@@ -375,7 +375,7 @@ const SignIn = props => {
                     to="/signup"
                     variant="h6"
                   >
-                    Sign up in less than a minute
+                    Quick sign up
                   </Link>
                 </Typography>
               </form>

@@ -44,7 +44,6 @@ const ProductsToolbar = props => {
         <Button 
           className={classes.exportButton}
         >
-            {/* MY STUFF  */}
         </Button>
         <Button
           color="primary"
@@ -54,12 +53,12 @@ const ProductsToolbar = props => {
           NEW LISTING
         </Button>
       </div>
-      <div className={classes.row}>
+      {/* <div className={classes.row}>
         <SearchInput
           className={classes.searchInput}
           placeholder="Search product"
         />
-      </div>
+      </div> */}
     </div>
   );
 };

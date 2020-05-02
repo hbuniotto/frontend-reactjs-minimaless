@@ -23,10 +23,6 @@ const useStyles = makeStyles((theme) => ({
   instructions: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
-  },
-  btnCancle: {
-    marginLeft: 20,
-     color: 'red'
   }
 }));
 
@@ -159,10 +155,6 @@ const EditListingDetails = (props) => {
     }));
   }
 
-  const handleUpdateCancle = () => {
-    props.history.push('/Account')
-  }
-
   const getStepContent = (step) => {
     switch (step) {
       case 0:
@@ -210,9 +202,6 @@ const EditListingDetails = (props) => {
                 disabled={!formState.isValid}
                 className={classes.buttonNext}
               >Next</Button>
-              <Button onClick={handleUpdateCancle} className={classes.btnCancle}>
-              Cancle Update
-            </Button>
             </> : ''
             }
             {
@@ -225,9 +214,6 @@ const EditListingDetails = (props) => {
                 onClick={handleNext}
                 className={classes.buttonNext}
               >Next</Button>
-              <Button disabled={formState.images.length !== 5} onClick={handleUpdateCancle} className={classes.btnCancle}>
-              Cancle Update
-            </Button>
             </> : ''
             }
             {
@@ -240,14 +226,8 @@ const EditListingDetails = (props) => {
                 onClick={handleSubmit}
                 className={classes.buttonNext}
               >Finish</Button>
-              <Button onClick={handleUpdateCancle} className={classes.btnCancle}>
-              Cancle Update
-            </Button>
             </> : ''
             }
-            {/* <Button onClick={handleUpdateCancle} className={classes.btnCancle}>
-              Cancle Update
-            </Button> */}
             </div>
           </div>
         )}

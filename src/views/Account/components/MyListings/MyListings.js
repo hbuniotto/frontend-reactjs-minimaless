@@ -24,17 +24,21 @@ const useStyles = makeStyles(theme => ({
   btnstyle: {
     marginLeft: 'auto',
   },
+
   activeInactive: {
     border: '1px solid black',
     borderRadius: 5
   },
+
   price: {
     textAlign: 'right',
   },
+
   productImg: {
     height: 80,
-    width: 80,
-    borderRadius: 5
+    width: 120,
+    borderRadius: 5,
+    marginLeft: 10
   },
   productDetail: {
     display: 'flex',
@@ -45,7 +49,7 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center'
   },
   description: {
-    paddingLeft: 45,
+    paddingLeft: 10,
   }
 }));
 
@@ -96,7 +100,7 @@ const decoded = jwt_decode(localStorage.jwtToken);
       <CardContent>
         <div className={classes.details}>
           <Grid container>
-            <Grid item md={9} xs={12}>
+            <Grid item md={6} xs={12}>
             <Typography
               gutterBottom
               variant="h2"
@@ -104,7 +108,7 @@ const decoded = jwt_decode(localStorage.jwtToken);
               My Listings
             </Typography>
             </Grid>  
-            <Grid item md={4} xs={12}>
+            <Grid item md={6} xs={12}>
             <CardActions className={classes.btnstyle}>
             
             <Button
@@ -133,7 +137,7 @@ const decoded = jwt_decode(localStorage.jwtToken);
               className={classes.image}
               item
               lg={1}
-              md={1}
+              md={6}
               xs={9}
             >
             <img className={classes.productImg} src={ list.images[0] ? list.images[0].url : product.blank} alt="product" />
@@ -167,7 +171,7 @@ const decoded = jwt_decode(localStorage.jwtToken);
                 variant="h6"
               >
                 {/* Medium | Practically New | Chic | Black */}
-                {list.size}
+                {list.size} | {list.color} | {list.condition} | {list.category} | {list.occasion} 
               </Typography>
             </Grid>
             <Grid
@@ -193,7 +197,7 @@ const decoded = jwt_decode(localStorage.jwtToken);
                     </Button>
                   </Link>
                     <Button
-                      style={{color: 'red'}}
+                      color="primary"
                       variant="text"
                       // color="primary"
                       onClick={() => handleDelete(list)}

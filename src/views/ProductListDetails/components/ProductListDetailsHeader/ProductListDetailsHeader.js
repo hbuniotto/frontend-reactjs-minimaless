@@ -62,7 +62,7 @@ const ProductListDetailsHeader = props => {
               color="textSecondary"
               variant="body1"
             >
-              <span>{lists.size}</span> | <span>{lists.color}</span> | <span>{lists.category}</span> | <span>{lists.condition}</span> | <span>{lists.occasion}</span>
+              <span>{lists.size}</span> | <span>{lists.color}</span> | <span>{lists.condition}</span> | <span>{lists.category}</span> | <span>{lists.occasion}</span>
             </Typography>
           </div>
           <Typography
