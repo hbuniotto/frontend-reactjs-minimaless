@@ -1,11 +1,14 @@
 /* eslint-disable react/no-multi-comp */
 /* eslint-disable react/display-name */
-import React, { forwardRef } from 'react';
-import { NavLink as RouterLink } from 'react-router-dom';
+import React, { forwardRef, useContext } from 'react';
+import { NavLink as RouterLink, withRouter } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { List, ListItem, Button, colors } from '@material-ui/core';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
+import AuthContext from 'context/AuthContext/AuthContext';
+import setAuthToken from 'common/setAuthToken';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -50,32 +53,83 @@ const CustomRouterLink = forwardRef((props, ref) => (
 ));
 
 const SidebarNav = props => {
-  const { pages, className, ...rest } = props;
-
+  const { pages, authPage, className, ...rest } = props;
   const classes = useStyles();
+
+  const authContext = useContext(AuthContext);
+  const { isAuthenticated } = authContext;
+
+  const handleLogout = () => {
+    // Remove token from localStorage
+    localStorage.removeItem('jwtToken');
+    // Remove auth header for future requests
+    setAuthToken(false);
+    props.history.push('/login')
+  }
 
   return (
     <List
       {...rest}
       className={clsx(classes.root, className)}
     >
-      {pages.map(page => (
-        <ListItem
-          className={classes.item}
-          disableGutters
-          key={page.title}
-        >
-          <Button
-            activeClassName={classes.active}
-            className={classes.button}
-            component={CustomRouterLink}
-            to={page.href}
-          >
-            <div className={classes.icon}>{page.icon}</div>
-            {page.title}
-          </Button>
-        </ListItem>
-      ))}
+
+      {isAuthenticated ? (
+          <>
+            {authPage.map(page => (
+              <ListItem
+                className={classes.item}
+                disableGutters
+                key={page.title}
+              >
+                <Button
+                  activeClassName={classes.active}
+                  className={classes.button}
+                  component={CustomRouterLink}
+                  to={page.href}
+                >
+                  <div className={classes.icon}>{page.icon}</div>
+                  {page.title}
+                </Button>
+              </ListItem>
+            ))}
+            <ListItem
+                className={classes.item}
+                disableGutters
+                key='Sign Out'
+                onClick={handleLogout}
+              >
+                <Button
+                  activeClassName={classes.active}
+                  className={classes.button}
+                  component={CustomRouterLink}
+                  to='/login'
+                >
+                  <div className={classes.icon}><LockOpenIcon /></div>
+                  Sign Out
+                </Button>
+              </ListItem>
+        </>
+      ) : (
+        <>
+            {pages.map(page => (
+              <ListItem
+                className={classes.item}
+                disableGutters
+                key={page.title}
+              >
+                <Button
+                  activeClassName={classes.active}
+                  className={classes.button}
+                  component={CustomRouterLink}
+                  to={page.href}
+                >
+                  <div className={classes.icon}>{page.icon}</div>
+                  {page.title}
+                </Button>
+              </ListItem>
+            ))}
+        </>
+      )}
     </List>
   );
 };
@@ -85,4 +139,4 @@ SidebarNav.propTypes = {
   pages: PropTypes.array.isRequired
 };
 
-export default SidebarNav;
+export default withRouter(SidebarNav);

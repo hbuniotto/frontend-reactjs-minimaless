@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
@@ -11,8 +11,8 @@ import {
   Button,
   Grid
 } from '@material-ui/core';
-import Axios from 'axios';
 import { withRouter, Link } from 'react-router-dom'
+import ListingContext from 'context/Listing/ListingContext';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -51,65 +51,27 @@ const AccountProfile = props => {
   const { className, ...rest } = props;
   const classes = useStyles();
 
-
-  const [listingsData, setListingData] = useState([])
-  const [loadingData, setLaodingData] = useState(false)
+  const listingContext = useContext(ListingContext);
+  const { getListings, listingsData, deleteAllImage, deleteList } = listingContext;
   const [id, setId] = useState()
 
   useEffect(() => {
-    Axios.get('/api/listings')
-      .then(res => {
-        setLaodingData(true)
-        setListingData(res.data.lists)
-        setLaodingData(false)
-      }).catch(err => {
-        console.log(err)
-        setLaodingData(false)
-      })
-  }, [id])
-
-  // const handleDelete = (id) => {
-  //   console.log(id)
-  //   setLaodingData(true)
-  //   Axios.delete(`api/listings/${id}`).then(res => {
-  //     console.log('delete')
-  //     setId(id)
-  //   setLaodingData(false)
-  //   }).catch(err => {
-  //     console.log(err)
-  //     setLaodingData(false)
-  //   })
-
-  // }
+      console.log('hello')
+      getListings();
+      setId()
+  }, [id]);
 
   const handleDelete = (list) => {
+    console.log('delete my stuff list')
     let public_id = [];
     list.images.map(image => {
       public_id.push(image.public_id)
     })
 
-    console.log(public_id)
-    Axios.delete(`/api/deleteimage?public_id=${public_id}`)
-    .then(res => {
-      console.log(res)
-    }).catch(err => {
-      console.log(err)
-    }) 
-
-    setLaodingData(true)
-    Axios.delete(`api/listings/${list._id}`).then(res => {
-      console.log('delete')
-      setId(list._id)
-    setLaodingData(false)
-    }).catch(err => {
-      console.log(err)
-      setLaodingData(false)
-    })
-
+    deleteAllImage(public_id)
+    deleteList(list._id)
+    setId(list._id)
   }
-
-  // console.log(listingsData)
-  // console.log(lodingData)
 
   const product = {
     blank: '/images/products/blank.jpg'

@@ -15,6 +15,8 @@ import Routes from './Routes';
 
 import setAuthToken from './common/setAuthToken'
 import jwt_decode from 'jwt-decode';
+import LisingProvider from 'context/Listing/ListingProvider';
+import AuthProvider from 'context/AuthContext/AuthProvider';
 
 const browserHistory = createBrowserHistory();
 
@@ -59,11 +61,15 @@ if (localStorage.jwtToken) {
 export default class App extends Component {
   render() {
     return (
-      <ThemeProvider theme={theme}>
-        <Router history={browserHistory}>
-          <Routes />
-        </Router>
-      </ThemeProvider>
+      <AuthProvider>
+        <LisingProvider>
+          <ThemeProvider theme={theme}>
+            <Router history={browserHistory}>
+              <Routes />
+            </Router>
+          </ThemeProvider>
+        </LisingProvider>
+      </AuthProvider>
     );
   }
 }

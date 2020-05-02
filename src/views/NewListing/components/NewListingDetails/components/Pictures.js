@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import {
   Grid,
   Typography,
@@ -10,9 +9,6 @@ import {
 } from '@material-ui/core';
 
 import DeleteIcon from '@material-ui/icons/Delete';
-import StarIcon from '@material-ui/icons/Star';
-
-
 import Axios from 'axios'
 
 import '../../../../../assets/scss/slider.scss';
@@ -68,16 +64,19 @@ class Pictures extends Component {
 
         Axios.post('/api/listings/uploadimage',formData,config)
         .then(response => {
- 
-             this.setState({
-                 uploading:false,
-                 uploadedFiles:[
-                     ...this.state.uploadedFiles,
-                     response.data
-                 ]
-             },()=>{
-                 this.props.imagesHandler(this.state.uploadedFiles)
+            this.setState({
+                uploading:false,
+                uploadedFiles:[
+                    ...this.state.uploadedFiles,
+                    response.data
+                ]
+            },()=>{
+                this.props.imagesHandler(this.state.uploadedFiles)
+                this.setState({uploading:false});
              })
+        }).catch(err => {
+            console.log(err)
+            this.setState({uploading:false});
         });
      }
 
@@ -141,7 +140,7 @@ class Pictures extends Component {
                   />
                   <label htmlFor="contained-button-file">
                       <Button variant="contained" color="primary" component="span">
-                      Upload
+                        Upload
                       </Button>
                   </label>
                   </div>
@@ -171,9 +170,9 @@ class Pictures extends Component {
                   
                 {this.state.uploading ?  <div style={{textAlign: 'center'}}><CircularProgress /></div> : '' }               
 
-                {this.state.uploadedFiles.length > 0 ? (
+                {images.length > 0 ? (
                     <div className={classes.image}>
-                        {this.state.uploadedFiles.map((image, i )=> (
+                        {images.map((image, i )=> (
                             <div key={i} className={classes.imageBody}>
                                 <img className={classes.productImg} src={image.url} alt="product" />
                                 <div className={classes.iconarea}>

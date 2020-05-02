@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles, formatMs } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import ListDetails from './components/ListDetails'
 import Pictures from './components/Pictures';
 import PriceList from './components/PriceList';
@@ -107,7 +107,7 @@ const EditListingDetails = (props) => {
       .then(res => {
         setTimeout(() => {
           props.history.push('/Account')
-        }, 2000);
+        }, 1000);
       })
       .catch(err => {
         console.log(err)

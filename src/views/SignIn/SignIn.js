@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import validate from 'validate.js';
@@ -13,11 +13,7 @@ import {
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
-// import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
-import Axios from 'axios';
-
-import setAuthToken from '../../common/setAuthToken';
-import jwt_decode from 'jwt-decode';
+import AuthContext from 'context/AuthContext/AuthContext';
 
 const schema = {
   email: {
@@ -132,7 +128,16 @@ const useStyles = makeStyles(theme => ({
 const SignIn = props => {
   const { history } = props;
 
+  const authContext = useContext(AuthContext);
+  const { signIn, emailError, isAuthenticated } = authContext;
+
   const classes = useStyles();
+
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     history.push('/listings');
+  //   }
+  // }, [])
 
   const [formState, setFormState] = useState({
     isValid: false,
@@ -143,12 +148,7 @@ const SignIn = props => {
     touched: {},
     errors: {},
     emailPasswordError: {},
-    isAuthenticated: false,
-    user: {}
   });
-
-  // console.log(formState.isAuthenticated)
-  // console.log(formState.user)
 
   useEffect(() => {
     const errors = validate(formState.values, schema);
@@ -180,24 +180,15 @@ const SignIn = props => {
         ...formState.touched,
         [event.target.name]: true
       },
-      emailPasswordError: '',
     }));
   };
 
-  const userAuthentication = (token) => {
-    // Set token to ls
-    localStorage.setItem('jwtToken', token);
-    // Set token to Auth header
-    setAuthToken(token);
-    // Decode token to get user data
-    const decoded = jwt_decode(token);
-    // const isAuthenticated = !isEmpty(decoded)
+  useEffect(() => {
     setFormState(formState => ({
       ...formState,
-      isAuthenticated: true ? true : false,
-      user: decoded
+      emailPasswordError: emailError || ''
     }));
-  }
+  }, [emailError]);
 
   const handleSignIn = event => {
     event.preventDefault();
@@ -206,23 +197,18 @@ const SignIn = props => {
       password: formState.values.password
     }
 
-    Axios.post('/api/login', userData)
-    .then(res => {
-      const { token } = res.data;
-      userAuthentication(token)
-      history.push('/dashboard')
-    })
-    .catch(err => {
-      const emailPasswordError = err.response.data;
-      setFormState(formState => ({
-        ...formState,
-        emailPasswordError: emailPasswordError || ''
-      }));
-    })
+    signIn(userData, history)
+
+    setFormState(formState => ({
+      ...formState,
+      emailPasswordError: emailError || ''
+    }));
   };
 
   const hasError = field =>
     formState.touched[field] && formState.errors[field] ? true : false;
+
+
 
   return (
     <div className={classes.root}>

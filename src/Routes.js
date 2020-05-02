@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Switch, Redirect } from 'react-router-dom';
 
 import { RouteWithLayout } from './components';
 import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
 
 import {
-  Dashboard as DashboardView,
+  // Dashboard as DashboardView,
   ProductList as ProductListView,
   ProductListDetails as ProductDetailsView,
-  UserList as UserListView,
+  // UserList as UserListView,
   Typography as TypographyView,
   Icons as IconsView,
   Account as AccountView,
@@ -19,14 +19,27 @@ import {
   SignIn as SignInView,
   NotFound as NotFoundView
 } from './views';
+import PrivateRoute from 'common/PrivateRoute';
+import AuthContext from 'context/AuthContext/AuthContext';
+
 
 const Routes = () => {
+  const authContext = useContext(AuthContext);
+  const { isAuthenticated } = authContext;
+
+  // Check for token
+  if (localStorage.jwtToken) {
+    authContext.isAuthenticated = true
+  } else {
+    authContext.isAuthenticated = false
+  }
+  console.log(isAuthenticated)
   return (
     <Switch>
       <Redirect
         exact
         from="/"
-        to="/login"
+        to="/listings"
       />
       {/* <RouteWithLayout
         component={DashboardView}
@@ -64,19 +77,19 @@ const Routes = () => {
         layout={MainLayout}
         path="/icons"
       />
-      <RouteWithLayout
+      <PrivateRoute
         component={AccountView}
         exact
         layout={MainLayout}
         path="/account"
       />
-      <RouteWithLayout
+      <PrivateRoute
         component={NewListView}
         exact
         layout={MainLayout}
         path="/account/newlisting"
       />
-      <RouteWithLayout
+      <PrivateRoute
         component={EditListView}
         exact
         layout={MainLayout}

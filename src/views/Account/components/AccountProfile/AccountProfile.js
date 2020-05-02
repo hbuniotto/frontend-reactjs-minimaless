@@ -1,25 +1,32 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import moment from 'moment';
 import { makeStyles } from '@material-ui/styles';
 import {
   Card,
   CardActions,
   CardContent,
   Avatar,
-  Typography,
   Divider,
   Button,
-  LinearProgress,
   TextField,
   Grid
 } from '@material-ui/core';
+import jwt_decode from 'jwt-decode';
+import Axios from 'axios';
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles(theme => ({
   root: {},
   details: {
     display: 'flex'
+  },
+  input: {
+    display: 'none',
+  },
+  uploadbtn: {
+      textAlign: 'center',
+      marginLeft: theme.spacing(3)
   },
   avatar: {
     marginLeft: 15,
@@ -28,10 +35,8 @@ const useStyles = makeStyles(theme => ({
     flexShrink: 0,
     flexGrow: 0
   },
-  
   uploadPictureButton: {
     marginLeft: theme.spacing(3)
-    
   },
 
   updateButton : {
@@ -50,55 +55,123 @@ const AccountProfile = props => {
     city: 'Miami Beach',
     country: 'USA',
     timezone: 'GTM-5',
-    avatar: '/images/avatars/humberto.jpg'
+    avatar: '/images/avatars/avatar-demo.png'
   };
 
-  const [values, setValues] = useState({ // will come from user model
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    street: '',
-    city: '',
-    state: ''
+  const [userState, setUserState] = useState({
+    values: {
+      firstName: '',
+      lastName: '',
+      phone: '',
+      email: '',
+      street: '',
+      city: '',
+      state: '',
+      zipcode: '',
+      avatar: []
+    },
+    updateSuccess: false,
   });
+  
+  useEffect(() => {
+    Axios.get('/api/profile')
+    .then(res => {
+      const decoded = jwt_decode(localStorage.jwtToken);
+      if(res.data.email === decoded.email) {
+        setUserState(userState => ({
+        ...userState,
+        values: {
+          ...userState.values,
+          firstName: res.data.firstName,
+          lastName: res.data.lastName,
+          phone: res.data.phone,
+          email: res.data.email,
+          street: res.data.address.street,
+          city: res.data.address.city,
+          state: res.data.address.state,
+          zipcode: res.data.address.zipcode,
+          avatar: res.data.avatar,
+        }
+      }));
+      } else {
+        console.log('email doesn\'t match')
+      }
+
+      // console.log(res.data)
+
+    }).catch(err => {
+      console.log(err)
+    })
+  }, [])
 
   const handleChange = event => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
-    });
+        event.persist();
+    setUserState(userState =>({
+      ...userState,
+      values: {
+        ...userState.values,
+        [event.target.name]: event.target.value
+      }
+    }));
   };
 
-  const handleUpdate = e => {
+    const handleUpdate = e => {
     e.preventDefault();
-    const update = {
-      firstName: values.firstName,
-      lastName: values.lastName,
-      email: values.email,
-      phone: values.phone,
-      street: values.street,
-      city: values.city,
-      state: values.state,
-      zip: values.zip
+    const userDataUpdate = {
+      firstName: userState.values.firstName,
+      lastName: userState.values.lastName,
+      phone: userState.values.phone,
+      email: userState.values.email,
+      street: userState.values.street,
+      city: userState.values.city,
+      state: userState.values.state,
+      zipcode: userState.values.zipcode,
+      avatar: userState.values.avatar,
     }
-    console.log(update)
+    // console.log(userDataUpdate)
+    Axios.post('/api/profile', userDataUpdate)
+    .then(res => {
+      // console.log(res.data)
+      setUserState(userState =>({
+        ...userState,
+        updateSuccess: true
+      }));
+
+      setTimeout(() => {
+        setUserState(userState =>({
+          ...userState,
+          updateSuccess: false
+        }));
+      }, 3000)
+
+    }).catch(err => {
+      console.log(err)
+    })
   }
 
-  // const states = [ // this will come from the backend.
-  //   {
-  //     value: 'alabama',
-  //     label: 'Alabama'
-  //   },
-  //   {
-  //     value: 'new-york',
-  //     label: 'New York'
-  //   },
-  //   {
-  //     value: 'san-francisco',
-  //     label: 'San Francisco'
-  //   }
-  // ];
+  const handleImageChange = (e) => {
+    // this.setState({uploading:true});
+    let formData = new FormData();
+    const config = {
+        header: {'content-type':'multipart/form-data'}
+    }
+    formData.append("images",e.target.files[0]);
+
+    Axios.post('/api/profile/avatar', formData, config)
+    .then(res => {
+      setUserState(userState => ({
+        ...userState,
+        values: {
+          ...userState.values,
+          avatar: [...userState.values.avatar, res.data]
+        }
+      }))
+    }).catch(err => {
+      console.log(err)
+    })
+ }
+
+//  console.log(userState.values.avatar[userState.values.avatar.length - 1])
 
   return (
     <Card
@@ -109,18 +182,25 @@ const AccountProfile = props => {
         <div className={classes.details}>
           <Avatar
             className={classes.avatar}
-            src={user.avatar}
+            src={userState.values.avatar && userState.values.avatar[userState.values.avatar.length - 1] ? userState.values.avatar[userState.values.avatar.length - 1].url : user.avatar}
           />
-          
-          <div>
-            <Button
-          className={classes.uploadPictureButton}
-          color="primary"
-          variant="outlined"
-        >
-          UPLOAD PICTURE
-        </Button>
+          <div className={classes.uploadbtn}>
+            <input
+                accept="image/*"
+                className={classes.input}
+                id="contained-button-file"
+                multiple
+                type="file"
+                onChange={handleImageChange}
+            />
+            <label htmlFor="contained-button-file">
+                <Button  variant="outlined" color="primary" component="span">
+                  UPLOAD PICTURE
+                </Button>
+            </label>
           </div>
+
+
         </div>
         
       </CardContent>
@@ -145,7 +225,7 @@ const AccountProfile = props => {
                 name="firstName"
                 onChange={handleChange}
                 required
-                value={values.firstName}
+                value={userState.values.firstName}
                 variant="outlined"
                 placeholder='John'
               />
@@ -162,9 +242,8 @@ const AccountProfile = props => {
                 name="lastName"
                 onChange={handleChange}
                 required
-                value={values.lastName}
+                value={userState.values.lastName}
                 variant="outlined"
-                placeholder='text'
                 placeholder='Doe'
               />
             </Grid>
@@ -176,11 +255,12 @@ const AccountProfile = props => {
               <TextField
                 fullWidth
                 label="Phone Number"
+                type="number"
                 margin="dense"
                 name="phone"
                 onChange={handleChange}
                 required
-                value={values.phone}
+                value={userState.values.phone}
                 variant="outlined"
                 placeholder='(305) 555-1234'
               />
@@ -193,11 +273,12 @@ const AccountProfile = props => {
               <TextField
                 fullWidth
                 label="Email Address"
+                type="email"
                 margin="dense"
                 name="email"
                 onChange={handleChange}
                 required
-                value={values.email}
+                value={userState.values.email}
                 variant="outlined"
                 placeholder='you@email.com'
               />
@@ -214,7 +295,7 @@ const AccountProfile = props => {
                 name="street"
                 onChange={handleChange}
                 required
-                value={values.street}
+                value={userState.values.street}
                 variant="outlined"
                 placeholder='100 Happy Street'
               />
@@ -231,7 +312,7 @@ const AccountProfile = props => {
                 name="city"
                 onChange={handleChange}
                 required
-                value={values.city}
+                value={userState.values.city}
                 variant="outlined"
                 placeholder='(305) 555-1234'
               />
@@ -248,7 +329,7 @@ const AccountProfile = props => {
                 name="state"
                 onChange={handleChange}
                 required
-                value={values.state}
+                value={userState.values.state}
                 variant="outlined"
               />
             </Grid>
@@ -262,10 +343,10 @@ const AccountProfile = props => {
                 label="Zip Code"
                 type="number"
                 margin="dense"
-                name="country"
+                name="zipcode"
                 onChange={handleChange}
                 required
-                value={values.zipcode}
+                value={userState.values.zipcode}
                 variant="outlined"
               />
             </Grid>
@@ -273,6 +354,9 @@ const AccountProfile = props => {
           </Grid>
         </CardContent>
         <Divider />
+        {userState.updateSuccess ? (
+          <Alert severity="success">Profile updated</Alert>
+        ) : ''}
         <CardActions>
           <Button
             className={classes.updateButton}

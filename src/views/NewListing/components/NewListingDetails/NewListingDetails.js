@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { makeStyles, formatMs } from '@material-ui/core/styles';
+import React, { useState, useEffect, useContext } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import ListDetails from './components/ListDetails'
 import Pictures from './components/Pictures';
 import PriceList from './components/PriceList';
@@ -7,7 +7,7 @@ import AlertNotify from './components/AlertNotify';
 import { Grid, Stepper, Step, StepLabel, Button } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 
-import Axios from 'axios';
+import ListingContext from 'context/Listing/ListingContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +33,9 @@ function getSteps() {
 const NewListingDetails = (props) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
+
+  const listingContext = useContext(ListingContext);
+  const { addList } = listingContext;
 
   const [formState, setFormState] = useState({
     isValid: true,
@@ -70,15 +73,10 @@ const NewListingDetails = (props) => {
       price: formState.values.price,
       images: formState.images
     }
-    Axios.post('/api/listings', listingData)
-      .then(res => {
-        setTimeout(() => {
-          props.history.push('/listings')
-        }, 3000);
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    addList(listingData)
+    setTimeout(() => {
+      props.history.push('/listings')
+    }, 2000);
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   }
 

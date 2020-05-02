@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import {
   FormControl,
@@ -9,7 +8,6 @@ import {
   Grid,
   NativeSelect,
   Typography,
-  TextareaAutosize
 } from '@material-ui/core';
 
 
@@ -20,16 +18,11 @@ const useStyles = makeStyles(theme => ({
     margin: 0,
     padding: 0
   },
-  text: {
-    textAlign: 'center'
-  }
 }));
 
 const ListDetails = props => {
-  const { className, ...rest } = props;
-
   const classes = useStyles();
-const {title, brand, description, size, condition, category, occasion, color} = props.formState.values
+  const {title, brand, description, size, condition, category, occasion, color} = props.formState.values
   return (
     <form>
           <Grid
@@ -46,9 +39,9 @@ const {title, brand, description, size, condition, category, occasion, color} = 
             <Typography
                 className={classes.text}
                 color="textSecondary"
-                variant="h3"
+                variant="body1"
                 >
-                Edit Listing
+                Add the details of your listing. This is what others will see when they look for listings like yours.
             </Typography>
             </Grid>
             <Grid
@@ -214,6 +207,7 @@ const {title, brand, description, size, condition, category, occasion, color} = 
                     <option value='Business'>Business</option>
                     <option value='Casual'>Casual</option>
                     <option value='Athleisure'>Athleisure</option>
+                    <option value='Athleisure'>Other</option>
                     </NativeSelect>
                 </FormControl>
             </Grid>

@@ -1,18 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import {
   Grid,
-  Avatar,
-  Divider,
   Typography
 } from '@material-ui/core';
 import '../../../../../../assets/scss/slider.scss'
 
 import ProductDescription from './ProductDescription'
-import Slider from "react-slick";
 import ProductImage from './ProductImage';
-import Axios from 'axios';
+import ListingContext from 'context/Listing/ListingContext';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -25,19 +22,12 @@ const ProductItem = props => {
   const {products, className } = props;
   const classes = useStyles();
 
-  const [listingsData, setListingData] = useState([])
-  const [lodingData, setlodingData] = useState(false)
+  const listingContext = useContext(ListingContext);
+  const { getListings, listingsData, loading } = listingContext;
 
   useEffect(() => {
-    Axios.get('/api/listings')
-      .then(res => {
-        setlodingData(true)
-        setListingData(res.data.lists)
-        setlodingData(false)
-      }).catch(err => {
-        console.log(err)
-        setlodingData(false)
-      })
+    console.log('hello')
+    getListings();
   }, [])
 
   return (

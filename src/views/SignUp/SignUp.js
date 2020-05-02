@@ -1,29 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import validate from 'validate.js';
 import { makeStyles } from '@material-ui/styles';
-
-// import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-import setAuthToken from '../../common/setAuthToken';
-import jwt_decode from 'jwt-decode';
-
-// import Alert from '../../common/Alert'
-
 import {
   Grid,
   Button,
   IconButton,
   TextField,
   Link,
-  // FormHelperText,
-  // Checkbox,
   Typography
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import Axios from 'axios';
+
+import AuthContext from 'context/AuthContext/AuthContext';
 
 const schema = {
   email: {
@@ -162,8 +153,16 @@ const useStyles = makeStyles(theme => ({
 
 const SignUp = props => {
   const { history } = props;
-
   const classes = useStyles();
+
+  const authContext = useContext(AuthContext);
+  const { signUp, emailError, isAuthenticated } = authContext;
+
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     history.push('/listings');
+  //   }
+  // }, [])
 
   const [formState, setFormState] = useState({
     isValid: false,
@@ -174,13 +173,7 @@ const SignUp = props => {
     touched: {},
     errors: {},
     emailError: '',
-    success: false,
-    isAuthenticated: false,
-    user: {}
   });
-
-  // console.log(formState.isAuthenticated)
-  // console.log(formState.user)
 
   useEffect(() => {
     const errors = validate(formState.values, schema);
@@ -208,7 +201,6 @@ const SignUp = props => {
         ...formState.touched,
         [event.target.name]: true
       },
-      emailError: '',
     }));
   };
 
@@ -216,19 +208,12 @@ const SignUp = props => {
     history.goBack();
   };
 
-  const userAuthentication = (token) => {
-    // Set token to ls
-    localStorage.setItem('jwtToken', token);
-    // Set token to Auth header
-    setAuthToken(token);
-    // Decode token to get user data
-    const decoded = jwt_decode(token);
+  useEffect(() => {
     setFormState(formState => ({
       ...formState,
-      isAuthenticated: true ? true : false,
-      user: decoded
+      emailError: emailError || ''
     }));
-  }
+  }, [emailError]);
 
   const handleSignUp = event => {
     event.preventDefault();
@@ -237,19 +222,13 @@ const SignUp = props => {
       email: formState.values.email,
       password: formState.values.password
     }
-    Axios.post('/api/signup', userData)
-    .then(res => {
-      const { token } = res.data;
-      userAuthentication(token)
-      history.push('/listings')
-    })
-    .catch(err => {
-      const emailError = err.response.data.message;
-      setFormState(formState => ({
-        ...formState,
-        emailError: emailError || ''
-      }));
-    })
+
+    signUp(userData, history)
+    setFormState(formState => ({
+      ...formState,
+      emailError: emailError || ''
+    }));
+
   };
 
   const hasError = field =>
