@@ -13,6 +13,8 @@ import {
 } from '@material-ui/core';
 import { withRouter, Link } from 'react-router-dom'
 import ListingContext from 'context/Listing/ListingContext';
+import AuthContext from 'context/AuthContext/AuthContext';
+import jwt_decode from 'jwt-decode';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -53,13 +55,18 @@ const AccountProfile = props => {
 
   const listingContext = useContext(ListingContext);
   const { getListings, listingsData, deleteAllImage, deleteList } = listingContext;
+
+const decoded = jwt_decode(localStorage.jwtToken);
+
   const [id, setId] = useState()
+  const [user, setUser] = useState()
 
   useEffect(() => {
       console.log('hello')
       getListings();
       setId()
   }, [id]);
+ 
 
   const handleDelete = (list) => {
     console.log('delete my stuff list')
@@ -76,6 +83,9 @@ const AccountProfile = props => {
   const product = {
     blank: '/images/products/blank.jpg'
   };
+
+  console.log(listingsData)
+  console.log(decoded)
 
 
   return (
@@ -111,9 +121,8 @@ const AccountProfile = props => {
         </div>
       </CardContent>
       <Divider />
-
-    {listingsData.map((list, i) => (
-      <div key={list._id}>
+      {/* {props.listingsData.map(lists => lists._id === props.id ? */}
+    {listingsData.map((list, i) => list.owner === decoded.id ? <div key={list._id}>
         <Divider />
         <CardContent>     
           <Grid
@@ -195,8 +204,7 @@ const AccountProfile = props => {
             </Grid>
           </Grid>
         </CardContent>
-      </div>
-      ))}
+      </div>: '')}
       <Divider />
     </Card>
   );

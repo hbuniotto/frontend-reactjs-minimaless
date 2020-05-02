@@ -32,8 +32,6 @@ const useStyles = makeStyles(theme => ({
 
 const ProductListDetailsHeader = props => {
   const { className, ...rest } = props;
-  
-
   const classes = useStyles();
 
   return (
@@ -64,7 +62,7 @@ const ProductListDetailsHeader = props => {
               color="textSecondary"
               variant="body1"
             >
-              {lists.size}
+              <span>{lists.size}</span> | <span>{lists.color}</span> | <span>{lists.category}</span> | <span>{lists.condition}</span> | <span>{lists.occasion}</span>
             </Typography>
           </div>
           <Typography

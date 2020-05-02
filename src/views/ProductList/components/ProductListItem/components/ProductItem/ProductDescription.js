@@ -2,11 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import {
-  Grid,
   Typography,
   Avatar,
 } from '@material-ui/core';
-import ImageIcon from '@material-ui/icons/Image';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import { Link } from 'react-router-dom';
 
@@ -56,11 +54,10 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ProductDescription = props => {
-  const { className, ...rest } = props;
-
   const classes = useStyles();
 
-  const {brand,description, price, size, title, _id} = props.lists
+  const {brand,description,color, category, condition, occasion, price, size, title, _id} = props.lists
+  console.log(props.lists)
   return (
     <Link to={`/listings/${_id}`}>
       <br></br>
@@ -70,7 +67,7 @@ const ProductDescription = props => {
       <span className={classes.suitTitle}>{brand}</span>
       </Typography>
       <Typography className={classes.suitType}>
-      <span>{size}</span>
+      <span>{size}</span> | <span>{color}</span> | <span>{category}</span> | <span>{condition}</span> | <span>{occasion}</span>
       {/* <span>{size}</span> | <span>Practically New</span> | <span>Chic</span> | <span>Black</span>  */}
       </Typography>
       
