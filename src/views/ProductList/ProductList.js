@@ -36,35 +36,7 @@ const ProductList = () => {
   return (
     <div className={classes.root}>
         <ProductsToolbar />
-        <ProductListItem products={products} />
-
-      {/* <div className={classes.content}>
-        <Grid
-          container
-          spacing={2}
-        >
-          {products.map(product => (
-            <Grid
-              item
-              key={product.id}
-              lg={12}
-              md={12}
-              xs={12}
-            >
-              <ProductCard product={product} />
-            </Grid>
-          ))}
-        </Grid>
-      </div> */}
-      {/* <div className={classes.pagination}>
-        <Typography variant="caption">1-6 of 20</Typography>
-        <IconButton>
-          <ChevronLeftIcon />
-        </IconButton>
-        <IconButton>
-          <ChevronRightIcon />
-        </IconButton>
-      </div> */}
+          <ProductListItem products={products} />
 
     </div>
   );

@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
   body: {
     marginLeft: 20,
   }
-}));
+})); 
 
 const ProductItem = props => {
   const {products, className } = props;
@@ -26,7 +26,6 @@ const ProductItem = props => {
   const { getListings, listingsData, loading } = listingContext;
 
   useEffect(() => {
-    console.log('hello')
     getListings();
   }, [])
 

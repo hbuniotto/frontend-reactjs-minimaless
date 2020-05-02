@@ -175,11 +175,11 @@ class Pictures extends Component {
                         {images.map((image, i )=> (
                             <div key={i} className={classes.imageBody}>
                                 <img className={classes.productImg} src={image.url} alt="product" />
-                                <div className={classes.iconarea}>
-                                <DeleteIcon onClick={()=> this.onRemove(image.public_id)} 
-                                style={{ fill: 'gray', 
-                                cursor: 'pointer' }} />
-                                </div>
+                                    <div className={classes.iconarea}>
+                                        <DeleteIcon onClick={()=> this.onRemove(image.public_id)} 
+                                        style={{ fill: 'gray', 
+                                        cursor: 'pointer' }} />
+                                    </div>
                             </div>
                         ))}
                     </div>

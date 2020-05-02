@@ -180,10 +180,12 @@ const AccountProfile = props => {
     >
       <CardContent>
         <div className={classes.details}>
-          <Avatar
-            className={classes.avatar}
-            src={userState.values.avatar && userState.values.avatar[userState.values.avatar.length - 1] ? userState.values.avatar[userState.values.avatar.length - 1].url : user.avatar}
-          />
+          <div>
+            <Avatar
+              className={classes.avatar}
+              src={userState.values.avatar && userState.values.avatar[userState.values.avatar.length - 1] ? userState.values.avatar[userState.values.avatar.length - 1].url : user.avatar}
+            />
+          </div>
           <div className={classes.uploadbtn}>
             <input
                 accept="image/*"
@@ -199,8 +201,6 @@ const AccountProfile = props => {
                 </Button>
             </label>
           </div>
-
-
         </div>
         
       </CardContent>

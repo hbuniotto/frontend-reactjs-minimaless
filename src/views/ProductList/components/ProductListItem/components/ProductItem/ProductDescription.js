@@ -68,7 +68,6 @@ const ProductDescription = props => {
       </Typography>
       <Typography className={classes.suitType}>
       <span>{size}</span> | <span>{color}</span> | <span>{condition}</span> | <span>{category}</span> | <span>{occasion}</span>
-      {/* <span>{size}</span> | <span>Practically New</span> | <span>Chic</span> | <span>Black</span>  */}
       </Typography>
       
       <div className={classes.description}>

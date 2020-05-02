@@ -26,6 +26,7 @@ const ProductListItem = (props) => {
         <Grid
           // className={classes.ProductItem}
           item
+          lg={12}
           md={12}
           xs={12}
         >
