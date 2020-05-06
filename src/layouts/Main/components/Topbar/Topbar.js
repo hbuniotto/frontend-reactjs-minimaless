@@ -48,13 +48,13 @@ const Topbar = props => {
       className={clsx(classes.root, className)}
     >
       <Toolbar>
-        <RouterLink to="/">
+        {/* <RouterLink to="/">
           <img
           className={classes.imglogo}
             alt="Logo"
             src="/images/logos/minimaless_logo.png"
           />
-        </RouterLink>
+        </RouterLink> */}
         <div className={classes.flexGrow} />
         {isAuthenticated ? (
         <Hidden mdDown>

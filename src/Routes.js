@@ -33,7 +33,6 @@ const Routes = () => {
   } else {
     authContext.isAuthenticated = false
   }
-  console.log(isAuthenticated)
   return (
     <Switch>
       <Redirect
@@ -59,7 +58,7 @@ const Routes = () => {
         layout={MainLayout}
         path="/listings"
       />
-      <RouteWithLayout
+      <PrivateRoute
         component={ProductDetailsView}
         exact
         layout={MainLayout}

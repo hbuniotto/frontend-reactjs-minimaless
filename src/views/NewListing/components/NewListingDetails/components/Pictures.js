@@ -81,8 +81,10 @@ class Pictures extends Component {
      }
 
      onRemove = (id) => {
+         console.log(id)
         this.setState({uploading:true});
-        Axios.get(`/api/listings/removeimage?public_id=${id}`).then(response=>{
+        Axios.get(`/api/listings/removeimage?public_id=${id}`)
+        .then(response=>{
             let images = this.state.uploadedFiles.filter(item=>{
                 return item.public_id !== id;
             });
@@ -96,7 +98,6 @@ class Pictures extends Component {
         })
     }
     
-
     classes = useStyles();
 
     render() {
@@ -175,11 +176,11 @@ class Pictures extends Component {
                         {images.map((image, i )=> (
                             <div key={i} className={classes.imageBody}>
                                 <img className={classes.productImg} src={image.url} alt="product" />
-                                    <div className={classes.iconarea}>
-                                        <DeleteIcon onClick={()=> this.onRemove(image.public_id)} 
-                                        style={{ fill: 'gray', 
-                                        cursor: 'pointer' }} />
-                                    </div>
+                                <div className={classes.iconarea}>
+                                <DeleteIcon onClick={()=> this.onRemove(image.public_id)} 
+                                style={{ fill: 'gray', 
+                                cursor: 'pointer' }} />
+                                </div>
                             </div>
                         ))}
                     </div>

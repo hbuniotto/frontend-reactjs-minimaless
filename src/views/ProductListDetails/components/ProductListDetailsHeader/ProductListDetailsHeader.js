@@ -32,6 +32,7 @@ const useStyles = makeStyles(theme => ({
 
 const ProductListDetailsHeader = props => {
   const { className, ...rest } = props;
+  const { title, brand, size, color, category, condition, price, occasion } = props.listingsData;
   const classes = useStyles();
 
   return (
@@ -39,7 +40,7 @@ const ProductListDetailsHeader = props => {
       {...rest}
       className={clsx(classes.root, className)}
     >
-      {props.listingsData.map(lists => lists._id === props.id ? <CardContent key={lists._id}>
+      <CardContent>
         <div className={classes.details}>
           <div>
             <div className={classes.suit}>
@@ -47,14 +48,14 @@ const ProductListDetailsHeader = props => {
               gutterBottom
               variant="h4"
             >
-              {lists.title}
+              {title}
             </Typography>
             <Typography
               className={classes.suittype}
               color="textSecondary"
               variant="body2"
             >
-              {lists.brand}
+              {brand}
             </Typography>
             </div>
             <Typography
@@ -62,7 +63,7 @@ const ProductListDetailsHeader = props => {
               color="textSecondary"
               variant="body1"
             >
-              <span>{lists.size}</span> | <span>{lists.color}</span> | <span>{lists.condition}</span> | <span>{lists.category}</span> | <span>{lists.occasion}</span>
+              <span>{size}</span> | <span>{color}</span> | <span>{category}</span> | <span>{condition}</span> | <span>{occasion}</span>
             </Typography>
           </div>
           <Typography
@@ -70,10 +71,10 @@ const ProductListDetailsHeader = props => {
               color="primary"
               variant="h3"
             >
-              ${lists.price} / day
+              ${price} / day
             </Typography>
         </div>
-      </CardContent> : '' )}
+      </CardContent>
       
     </Card>
   );

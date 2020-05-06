@@ -8,6 +8,7 @@ import { Grid, Stepper, Step, StepLabel, Button } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 
 import ListingContext from 'context/Listing/ListingContext';
+import Axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,9 +34,7 @@ function getSteps() {
 const NewListingDetails = (props) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
-
-  const listingContext = useContext(ListingContext);
-  const { addList } = listingContext;
+  const steps = getSteps();
 
   const [formState, setFormState] = useState({
     isValid: true,
@@ -54,44 +53,18 @@ const NewListingDetails = (props) => {
     imagasSuccess: false
   });
 
-  const steps = getSteps();
+  const listingContext = useContext(ListingContext);
+  const { addList } = listingContext;
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
+  const [profile, setProfile] = useState({})
 
-  const handleSubmit = () => {
-    const listingData = {
-      title: formState.values.title,
-      brand: formState.values.brand,
-      description: formState.values.description,
-      size: formState.values.size,
-      condition: formState.values.condition,
-      category: formState.values.category,
-      occasion: formState.values.occasion,
-      color: formState.values.color,
-      price: formState.values.price,
-      images: formState.images
-    }
-    addList(listingData)
-    setTimeout(() => {
-      props.history.push('/listings')
-    }, 2000);
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  }
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const isFormValid = (data) => {
-    const {title, brand, description, size, condition, category, occasion, color} = data
-
-    if(!title || !brand || !description || !size || !condition || !category || !occasion || !color) {
-      return true
-    }
-    return false
-  };
+  useEffect(() => {
+    Axios.get('/api/profile').then(res => {
+      setProfile(res.data)
+    }).catch(err => {
+      console.log(err)
+    })
+  }, [])
 
   useEffect(() => {
     const errors = isFormValid(formState.values);
@@ -103,6 +76,7 @@ const NewListingDetails = (props) => {
     }));
   }, [formState.values]);
 
+  
   const handleChange = event => {
     event.persist();
     setFormState(formState => ({
@@ -117,12 +91,54 @@ const NewListingDetails = (props) => {
     }));
   };
 
+  const isFormValid = (data) => {
+    const {title, brand, description, size, condition, category, occasion, color} = data
+
+    if(!title || !brand || !description || !size || !condition || !category || !occasion || !color) {
+      return true
+    }
+    return false
+  };
+
+  const handleSubmit = () => {
+    const listingData = {
+      title: formState.values.title,
+      brand: formState.values.brand,
+      description: formState.values.description,
+      size: formState.values.size,
+      condition: formState.values.condition,
+      category: formState.values.category,
+      occasion: formState.values.occasion,
+      color: formState.values.color,
+      price: formState.values.price,
+      images: formState.images,
+      user: profile.user,
+      profile: profile._id,
+    }
+    addList(listingData)
+    setTimeout(() => {
+      props.history.push('/listings')
+    }, 2000);
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  }
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
   const imagesHandler = (images) => {
     setFormState(formState => ({
       ...formState,
       images
     }));
-}
+  }
+
+// console.log(profile._id)
+// console.log(profile)
 
   const getStepContent = (step) => {
     switch (step) {

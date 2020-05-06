@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/styles';
 import {
   Card,
   CardContent,
-  Typography,
   Grid,
 } from '@material-ui/core';
 
@@ -32,11 +31,13 @@ rightimgarea: {
 rightimg1: {
   height: 152,
   width: '100%',
-  // boxSizing: 'border-box',
   border: 'none',
   borderRadius: 5
 }
 }));
+
+// src={profile && profile.avatar && profile.avatar.length > 0 ? profile.avatar[profile.avatar.length - 1].url : user.avatar}
+// src={ images && images.length > 0 ? images[0].url : product.blank}
 
 const ProductListDetailsHeader = props => {
   const { className, ...rest } = props;
@@ -45,13 +46,14 @@ const ProductListDetailsHeader = props => {
   const product = {
     blank: '/images/products/blank.jpg'
   };
-  // console.log(props.listingsData)
+  const { images } = props.listingsData
+  console.log(props.listingsData.images && props.listingsData.images[0].url)
   return (
     <Card
       {...rest}
       className={clsx(classes.root, className)}
     >
-      {props.listingsData.map(lists => lists._id === props.id ?  <CardContent key={lists._id}>
+      <CardContent>
           <Grid
             container
             spacing={3}
@@ -62,7 +64,7 @@ const ProductListDetailsHeader = props => {
               md={6}
               xs={12}
             >
-            <img className={classes.featuredImage1} src={ lists.images[0] ? lists.images[0].url : product.blank} alt="product" />
+            <img className={classes.featuredImage1} src={ props.listingsData.images && props.listingsData.images[0].url ? props.listingsData.images[0].url : product.blank} alt="product" />
             </Grid>
             <Grid
               className={classes.rightimgbody}
@@ -76,10 +78,10 @@ const ProductListDetailsHeader = props => {
               xs={6}
             >
                 <div className={classes.rightimgarea}>
-                  <img className={classes.rightimg1} src={ lists.images[1] ? lists.images[1].url : product.blank} alt="product" />
+                  <img className={classes.rightimg1} src={ props.listingsData.images && props.listingsData.images[1].url ? props.listingsData.images[1].url : product.blank} alt="product" />
                 </div>
                 <div className={classes.rightimgarea}>
-                  <img className={classes.rightimg1} src={ lists.images[2] ? lists.images[2].url : product.blank} alt="product" />
+                  <img className={classes.rightimg1} src={ props.listingsData.images && props.listingsData.images[2] && props.listingsData.images[2].url ? props.listingsData.images[2].url : product.blank} alt="product" />
                 </div>
             </Grid>
             <Grid
@@ -88,15 +90,15 @@ const ProductListDetailsHeader = props => {
               xs={6}
             >
               <div className={classes.rightimgarea}>
-                <img className={classes.rightimg1} src={ lists.images[3] ? lists.images[3].url : product.blank} alt="product" />
+                <img className={classes.rightimg1} src={ props.listingsData.images && props.listingsData.images[3] && props.listingsData.images[3].url ? props.listingsData.images[3].url : product.blank} alt="product" />
               </div>
               <div className={classes.rightimgarea}>
-                <img className={classes.rightimg1} src={ lists.images[4] ? lists.images[4].url : product.blank} alt="product" />
+                <img className={classes.rightimg1} src={ props.listingsData.images && props.listingsData.images[4] && props.listingsData.images[4].url ? props.listingsData.images[4].url : product.blank} alt="product" />
               </div>
             </Grid>
             </Grid>
           </Grid>
-        </CardContent> : '')}
+        </CardContent>
     </Card>
   );
 };

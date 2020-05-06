@@ -11,12 +11,11 @@ import {
   Button,
   Grid
 } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-
 import { withRouter, Link } from 'react-router-dom'
 import ListingContext from 'context/Listing/ListingContext';
 import AuthContext from 'context/AuthContext/AuthContext';
 import jwt_decode from 'jwt-decode';
+import Axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -26,21 +25,17 @@ const useStyles = makeStyles(theme => ({
   btnstyle: {
     marginLeft: 'auto',
   },
-
   activeInactive: {
     border: '1px solid black',
     borderRadius: 5
   },
-
   price: {
     textAlign: 'right',
   },
-
   productImg: {
     height: 80,
-    width: 120,
-    borderRadius: 5,
-    marginLeft: 10
+    width: 80,
+    borderRadius: 5
   },
   productDetail: {
     display: 'flex',
@@ -48,11 +43,10 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center'
   },
   image: {
-    textAlign: 'center',
-    borderRadius: 5,
+    textAlign: 'center'
   },
   description: {
-    paddingLeft: 10,
+    paddingLeft: 45,
   }
 }));
 
@@ -63,20 +57,24 @@ const AccountProfile = props => {
   const listingContext = useContext(ListingContext);
   const { getListings, listingsData, deleteAllImage, deleteList } = listingContext;
 
-const decoded = jwt_decode(localStorage.jwtToken);
+  const authContext = useContext(AuthContext);
+  const { getProfile, loading, profile, stateChange, profileChange } = authContext;
 
   const [id, setId] = useState()
-  const [user, setUser] = useState()
+  const [alert, setAlert] = useState(false)
+  
+  const decoded = jwt_decode(localStorage.jwtToken);
 
   useEffect(() => {
-      console.log('hello')
+    getProfile()
+  }, [profileChange])
+
+  useEffect(() => {
       getListings();
       setId()
   }, [id]);
- 
 
   const handleDelete = (list) => {
-    console.log('delete my stuff list')
     let public_id = [];
     list.images.map(image => {
       public_id.push(image.public_id)
@@ -91,6 +89,17 @@ const decoded = jwt_decode(localStorage.jwtToken);
     blank: '/images/products/blank.jpg'
   };
 
+  const handleNewList = () => {
+    if(profile._id) {
+      props.history.push('/account/newlisting')
+    } else {
+      setAlert(true)
+      setTimeout(() => {
+        setAlert(false)
+      }, 2000)
+    }
+  }
+
   return (
     <Card
       {...rest}
@@ -99,7 +108,7 @@ const decoded = jwt_decode(localStorage.jwtToken);
       <CardContent>
         <div className={classes.details}>
           <Grid container>
-            <Grid item md={6} xs={12}>
+            <Grid item md={9} xs={12}>
             <Typography
               gutterBottom
               variant="h2"
@@ -107,106 +116,110 @@ const decoded = jwt_decode(localStorage.jwtToken);
               My Listings
             </Typography>
             </Grid>  
-            <Grid item md={6} xs={12}>
-              <CardActions className={classes.btnstyle}>
-              
-                <Button
-                  color="primary"
-                  variant="contained"
-                  href="/account/newlisting"
-                >
-                  NEW LISTING
-                </Button>
-              </CardActions>
+            <Grid item md={4} xs={12}>
+            <CardActions className={classes.btnstyle}>
+            
+            <Button
+              color="primary"
+              variant="contained"
+              // href="/account/newlisting"
+              onClick={handleNewList}
+            >
+              NEW LISTING
+            </Button>
+            </CardActions>
             </Grid>
           </Grid> 
         </div>
+        {alert && <Typography color="primary">Please update your profile before new listing</Typography>}
       </CardContent>
       <Divider />
-        {listingsData.map((list, i) => list.owner === decoded.id ? <div key={list._id}>
-      <Divider />
+
+        {listingsData.map((list, i) => list.user._id === decoded.id ? <div key={list._id}>
+        <Divider />
         <CardContent>     
           <Grid
             container
             className={classes.productDetail}
           >
-          <Grid
-            className={classes.image}
-            item
-            lg={3}
-            md={6}
-            xs={9}
-          >
-          <img className={classes.productImg} src={ list.images[0] ? list.images[0].url : product.blank} alt="product" />
-          </Grid>
-          <Grid
-            className={classes.description}
-            item
-            lg={6}
-            md={6}
-            xs={12}
-          > 
-            <Typography
-              gutterBottom
-              variant="h5"
+            <Grid
+              className={classes.image}
+              item
+              lg={1}
+              md={1}
+              xs={9}
             >
-              {list.title}
-            </Typography>
+            <img className={classes.productImg} src={ list.images[0] ? list.images[0].url : product.blank} alt="product" />
+            </Grid>
+            <Grid
+              className={classes.description}
+              item
+              md={6}
+              xs={12}
+            > 
+              <Typography
+                gutterBottom
+                variant="h5"
+              >
+                {/* Black suit */}
+                {list.title}
+              </Typography>
 
-            <Typography
-              gutterBottom
-              variant="h6"
-              style={{textTransform: 'uppercase'}}
-              color="textSecondary"
+              <Typography
+                gutterBottom
+                variant="h6"
+                style={{textTransform: 'uppercase'}}
+                color="textSecondary"
+              >
+                {/* HUGO BOSS */}
+                {list.brand}
+              </Typography>
+              
+              <Typography
+                gutterBottom
+                variant="h6"
+              >
+                {/* Medium | Practically New | Chic | Black */}
+                {list.size}
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              lg={3}
+              md={5}
+              xs={12}
             >
-              {list.brand}
-            </Typography>
-            
             <Typography
-              gutterBottom
-              variant="h6"
-            >
-              {/* Medium | Practically New | Chic | Black */}
-              {list.size} | {list.color} | {list.condition} | {list.category} | {list.occasion} 
-            </Typography>
+              className={classes.price}
+                gutterBottom
+                variant="h4"
+                color="primary"
+                >${list.price} / day</Typography>
+                <CardActions className={classes.btnstyle}>
+                  <Link to={`/account/newlisting/edit/${list._id}`}>
+                    <Button
+                      // className={classes.uploadButton}
+                      color="primary"
+                      variant="outlined"
+                    >
+                      UPDATE
+                    </Button>
+                  </Link>
+                    <Button
+                      color="primary"
+                  
+                      // color="primary"
+                      onClick={() => handleDelete(list)}
+                    >
+                      DELETE 
+                    </Button>
+                </CardActions> 
+            </Grid>
           </Grid>
-          <Grid
-            item
-            lg={3}
-            md={5}
-            xs={12}
-          >
-          <Typography
-            className={classes.price}
-              gutterBottom
-              variant="h4"
-              color="primary"
-              >${list.price} / day</Typography>
-              <CardActions className={classes.btnstyle}>
-                <Link to={`/account/newlisting/edit/${list._id}`}>
-                  <Button
-                    // className={classes.uploadButton}
-                    color="primary"
-                    variant="outlined"
-                  >
-                    UPDATE
-                  </Button>
-                  <DeleteIcon onClick={() => handleDelete(list)}
-                    style={
-                      { fill: 'gray', 
-                        cursor: 'pointer' 
-                      }
-                    }
-                  >
-                  </DeleteIcon>
-                </Link>
-              </CardActions> 
-          </Grid>
-        </Grid>
-      </CardContent>
-    </div>: '')}
-    <Divider />
-  </Card>
+        </CardContent>
+      </div>: '')}
+      <Divider />
+    </Card>
   );
 };
 

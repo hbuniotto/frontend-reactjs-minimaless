@@ -9,7 +9,12 @@ const AuthProvider = props => {
     const initialState = {
         isAuthenticated: false,
         user: {},
-        emailError: ''
+        emailError: '',
+
+        profile: '',
+        loading: false,
+
+        profileChange: 10
       };
 
     const [state, dispatch] = useReducer(AuthReducer, initialState);
@@ -48,12 +53,29 @@ const AuthProvider = props => {
         }
     }
 
+    const getProfile = async() => {
+        try {
+            dispatch({ type: 'SENDING_REQUEST' });
+            const res = await Axios.get('/api/profile')
+            const data = await res.data;
+            dispatch({ type: 'REQUEST_FINISHED' });
+            dispatch({ type: 'GET_PROFILE', payload: data });
+        } catch (err) {
+            console.log(err);
+            dispatch({ type: 'REQUEST_FINISHED' });
+        }
+    }
+
 // Set logged in user
     const setCurrentUser = decoded => {
         return {
             type: 'SET_CURRENT_USER',
             payload: decoded
         };
+    };
+
+    const stateChange = (date) => {
+        dispatch({ type: 'STATE_CHANGE', payload: date });
     };
 
 
@@ -65,7 +87,14 @@ const AuthProvider = props => {
                 emailError: state.emailError,
                 signUp: signUp,
                 signIn: signIn,
-                setCurrentUser: setCurrentUser
+                setCurrentUser: setCurrentUser,
+
+                getProfile: getProfile,
+                profile: state.profile,
+                loading: state.loading,
+
+                stateChange: stateChange,
+                profileChange: state.profileChange
             }}
         >
             {props.children}

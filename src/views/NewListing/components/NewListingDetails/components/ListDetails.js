@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import {
   FormControl,
@@ -9,7 +8,6 @@ import {
   Grid,
   NativeSelect,
   Typography,
-  TextareaAutosize
 } from '@material-ui/core';
 
 
@@ -23,10 +21,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ListDetails = props => {
-  const { className, ...rest } = props;
-
   const classes = useStyles();
-const {title, brand, description, size, condition, category, occasion, color} = props.formState.values
+  const {title, brand, description, size, condition, category, occasion, color} = props.formState.values
   return (
     <form>
           <Grid
@@ -96,24 +92,11 @@ const {title, brand, description, size, condition, category, occasion, color} = 
               md={7}
               xs={12}
             >
-              {/* <TextField
-                fullWidth
-                label="Description"
-                placeholder="Description"
-                margin="dense"
-                name="description"
-                required
-                variant="outlined"
-
-                className={classes.textField}
-                onChange={props.handleChange}
-                type="text"
-                value={description || ''}
-              /> */}
               <TextField
                 fullWidth
                 label="Description"
                 style={{width: '100%'}}
+                multiline
                 rowsMin={10}
                 aria-label="minimum height"
                 placeholder="My cool jacket is in great condition..."
@@ -153,34 +136,6 @@ const {title, brand, description, size, condition, category, occasion, color} = 
                   
                   </NativeSelect>
               </FormControl>
-            </Grid>
-            <Grid
-              style={{margin: '0 auto'}}
-              item
-              md={7}
-              xs={12}
-            >
-                <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="age-native-helper">Color</InputLabel>
-                    <NativeSelect
-                      onChange={props.handleChange}
-                      value={color || ''}
-                      inputProps={{
-                          name: 'color',
-                          id: 'age-native-helper',
-                      }}
-                    >
-                    <option aria-label="None" value="" />
-                    <option value='Black'>Black</option>
-                    <option value='White'>White</option>
-                    <option value='Red'>Red</option>
-                    <option value='Yellow'>Yellow</option>
-                    <option value='Blue'>Blue</option>
-                    <option value='Green'>Green</option>
-                    <option value='Pink'>Pink</option>
-                    <option value='Other'>Other</option>
-                    </NativeSelect>
-                </FormControl>
             </Grid>
             <Grid
               style={{margin: '0 auto'}}
@@ -257,7 +212,34 @@ const {title, brand, description, size, condition, category, occasion, color} = 
                     </NativeSelect>
                 </FormControl>
             </Grid>
-            
+            <Grid
+              style={{margin: '0 auto'}}
+              item
+              md={7}
+              xs={12}
+            >
+                <FormControl className={classes.formControl}>
+                    <InputLabel htmlFor="age-native-helper">Color</InputLabel>
+                    <NativeSelect
+                      onChange={props.handleChange}
+                      value={color || ''}
+                      inputProps={{
+                          name: 'color',
+                          id: 'age-native-helper',
+                      }}
+                    >
+                    <option aria-label="None" value="" />
+                    <option value='Black'>Black</option>
+                    <option value='White'>White</option>
+                    <option value='Red'>Red</option>
+                    <option value='Yellow'>Yellow</option>
+                    <option value='Blue'>Blue</option>
+                    <option value='Green'>Green</option>
+                    <option value='Pink'>Pink</option>
+                    <option value='Other'>Other</option>
+                    </NativeSelect>
+                </FormControl>
+            </Grid>
 
           </Grid>
       </form>

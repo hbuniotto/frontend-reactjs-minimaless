@@ -27,40 +27,11 @@ avatar: {
 
 const ProductListDetailsHeader = props => {
   const { className, ...rest } = props;
-
   const classes = useStyles();
-  const avatar = {
-    avatar1: '/images/avatars/humberto.jpg',
-  };
 
-  const [userData, setUserData] = useState([]);
-  const [userloading, setUserLoading] = useState(false);
+  const {profile} = props.listingsData
 
-  useEffect(() => {
-    Axios.get('/api/profile')
-    .then(res => {
-      setUserLoading(true)
-      const decoded = jwt_decode(localStorage.jwtToken);
-      if(res.data.email === decoded.email) {
-        setUserData(res.data);
-        setUserLoading(false)
-      } else {
-        console.log('email doesn\'t match')
-        setUserLoading(false)
-      }
-    }).catch(err => {
-      console.log(err)
-      setUserLoading(false)
-    })
-  }, [])
-
-  // console.log(userData.address)
-  console.log(userloading)
   const user = {
-    name: 'Humberto Buniotto',
-    city: 'Miami Beach',
-    country: 'USA',
-    timezone: 'GTM-5',
     avatar: '/images/avatars/avatar-demo.png'
   };
 
@@ -80,21 +51,20 @@ const ProductListDetailsHeader = props => {
               xs={12}
             >
             <div style={{display: 'flex'}}>
-            <Avatar className={classes.avatar} alt="Remy Sharp" src={userData.avatar && userData.avatar[userData.avatar.length - 1] ? userData.avatar[userData.avatar.length - 1].url : user.avatar} />
+            <Avatar className={classes.avatar} alt="Remy Sharp" src={profile && profile.avatar[profile.avatar.length - 1] ? profile.avatar[profile.avatar.length - 1].url : user.avatar} />
             <div style={{marginLeft: 15, marginBottom: 20}}>
               <Typography
                 gutterBottom
                 variant="h5"
               >
                 {/* Humberto */}
-                {userData.firstName}
+                {profile ? profile.firstName : 'First Name'}
               </Typography>
               <Typography
                 gutterBottom
                 variant="h6"
               >
-                {/* Miami Beach, FL */}
-                {userData.address ? userData.address.city : 'City'}, {userData.address ? userData.address.state : 'State'}
+                {profile ? profile.address.city : 'City'}, {profile ? profile.address.state : 'State'}
               </Typography>
               <div style={{display: 'flex'}}>
                 <PhoneIcon style={{ fontSize: 15, marginRight: 10 }} />
@@ -104,7 +74,7 @@ const ProductListDetailsHeader = props => {
                   display="block"
                 >
                   {/* (123) 555-1234 */}
-                  {userData.phone ? userData.phone : 'Phone Number'}
+                  {profile ? profile.phone : 'Phone'}
                 </Typography>
               </div>
               <div style={{display: 'flex'}}>
@@ -115,7 +85,7 @@ const ProductListDetailsHeader = props => {
                   display="block"
                 >
                   {/* humberto@email.com */}
-                  {userData.email ? userData.email : 'Email'}
+                  {profile ? profile.email : 'Email'}
                 </Typography>
               </div>
             </div>

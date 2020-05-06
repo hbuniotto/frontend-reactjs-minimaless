@@ -18,6 +18,9 @@ const useStyles = makeStyles(theme => ({
     margin: 0,
     padding: 0
   },
+  text: {
+    textAlign: 'center'
+  }
 }));
 
 const ListDetails = props => {
@@ -39,9 +42,9 @@ const ListDetails = props => {
             <Typography
                 className={classes.text}
                 color="textSecondary"
-                variant="body1"
+                variant="h3"
                 >
-                Add the details of your listing. This is what others will see when they look for listings like yours.
+                Edit Listing
             </Typography>
             </Grid>
             <Grid
@@ -96,6 +99,7 @@ const ListDetails = props => {
                 fullWidth
                 label="Description"
                 style={{width: '100%'}}
+                multiline
                 rowsMin={10}
                 aria-label="minimum height"
                 placeholder="My cool jacket is in great condition..."
@@ -207,7 +211,6 @@ const ListDetails = props => {
                     <option value='Business'>Business</option>
                     <option value='Casual'>Casual</option>
                     <option value='Athleisure'>Athleisure</option>
-                    <option value='Athleisure'>Other</option>
                     </NativeSelect>
                 </FormControl>
             </Grid>

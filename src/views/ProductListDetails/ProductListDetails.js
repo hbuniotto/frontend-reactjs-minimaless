@@ -14,28 +14,20 @@ const useStyles = makeStyles(theme => ({
 const ProductListDetails = (props) => {
   const classes = useStyles();
 
-  const [listingsData, setListingData] = useState([])
+  const [listingsData, setListingData] = useState({})
   const [lodingData, setlodingData] = useState(false)
 
   useEffect(() => {
-    Axios.get('/api/listings')
+    Axios.get(`/api/listings/list/${props.match.params.id}`)
       .then(res => {
-        setlodingData(true)
-        setListingData(res.data.lists)
-        setlodingData(false)
+        setListingData(res.data)
       }).catch(err => {
         console.log(err)
-        setlodingData(false)
       })
   }, [])
 
-  // console.log(listingsData)
-  // console.log(lodingData)
-// console.log(props.match.params.id)
-
   return (
     <div className={classes.root}>
-      {/* {listingsData.map(lists => ( */}
         <Grid
           container
           spacing={4}
@@ -49,7 +41,6 @@ const ProductListDetails = (props) => {
           >
           <ProductListDetailsHeader 
               listingsData={listingsData}
-              id={props.match.params.id}
           />
         </Grid>
         <Grid
@@ -61,7 +52,6 @@ const ProductListDetails = (props) => {
           >
           <ProductListDetailsImage 
               listingsData={listingsData}
-              id={props.match.params.id}
           />
         </Grid>
         <Grid
@@ -73,7 +63,6 @@ const ProductListDetails = (props) => {
           >
           <ProductListDetailsDescription 
               listingsData={listingsData}
-              id={props.match.params.id}
           />
         </Grid>
         <Grid
@@ -85,7 +74,6 @@ const ProductListDetails = (props) => {
           >
           <ProductListDetailsProfile 
               listingsData={listingsData}
-              id={props.match.params.id}
           />
         </Grid>
         </Grid>

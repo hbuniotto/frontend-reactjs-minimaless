@@ -22,7 +22,7 @@ const ProductListDetailsHeader = props => {
       {...rest}
       className={clsx(classes.root, className)}
     >
-      {props.listingsData.map(lists => lists._id === props.id ? <CardContent style={{minHeight: 200}}>
+      <CardContent style={{minHeight: 200}}>
           <Typography
               gutterBottom
               variant="h4"
@@ -33,9 +33,9 @@ const ProductListDetailsHeader = props => {
               color="textSecondary"
               variant="body2"
             >
-              {lists.description}
+              {props.listingsData.description}
             </Typography>
-        </CardContent> : '' )}
+        </CardContent>
     </Card>
   );
 };

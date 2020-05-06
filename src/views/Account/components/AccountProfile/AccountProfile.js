@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
@@ -15,6 +15,7 @@ import {
 import jwt_decode from 'jwt-decode';
 import Axios from 'axios';
 import Alert from '@material-ui/lab/Alert';
+import AuthContext from 'context/AuthContext/AuthContext';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -72,7 +73,14 @@ const AccountProfile = props => {
     },
     updateSuccess: false,
   });
-  
+
+  const [updateData, setUpdateData] = useState()
+
+  const authContext = useContext(AuthContext);
+  const { getProfile, loading, profile, stateChange, profileChange } = authContext;
+
+  // console.log(profile)
+
   useEffect(() => {
     Axios.get('/api/profile')
     .then(res => {
@@ -96,13 +104,12 @@ const AccountProfile = props => {
       } else {
         console.log('email doesn\'t match')
       }
-
-      // console.log(res.data)
-
     }).catch(err => {
       console.log(err)
     })
-  }, [])
+  }, [profileChange])
+
+  // console.log(profileChange)
 
   const handleChange = event => {
         event.persist();
@@ -115,13 +122,14 @@ const AccountProfile = props => {
     }));
   };
 
-    const handleUpdate = e => {
+  const handleUpdate = e => {
+    const decoded = jwt_decode(localStorage.jwtToken);
     e.preventDefault();
     const userDataUpdate = {
       firstName: userState.values.firstName,
       lastName: userState.values.lastName,
       phone: userState.values.phone,
-      email: userState.values.email,
+      email: decoded.email,
       street: userState.values.street,
       city: userState.values.city,
       state: userState.values.state,
@@ -142,7 +150,9 @@ const AccountProfile = props => {
           ...userState,
           updateSuccess: false
         }));
-      }, 3000)
+      }, 2000)
+
+      stateChange(Date.now())
 
     }).catch(err => {
       console.log(err)
@@ -180,12 +190,10 @@ const AccountProfile = props => {
     >
       <CardContent>
         <div className={classes.details}>
-          <div>
-            <Avatar
-              className={classes.avatar}
-              src={userState.values.avatar && userState.values.avatar[userState.values.avatar.length - 1] ? userState.values.avatar[userState.values.avatar.length - 1].url : user.avatar}
-            />
-          </div>
+          <Avatar
+            className={classes.avatar}
+            src={userState.values.avatar && userState.values.avatar[userState.values.avatar.length - 1] ? userState.values.avatar[userState.values.avatar.length - 1].url : user.avatar}
+          />
           <div className={classes.uploadbtn}>
             <input
                 accept="image/*"
@@ -201,6 +209,8 @@ const AccountProfile = props => {
                 </Button>
             </label>
           </div>
+
+
         </div>
         
       </CardContent>
@@ -249,7 +259,7 @@ const AccountProfile = props => {
             </Grid>
             <Grid
               item
-              md={6}
+              md={12}
               xs={12}
             >
               <TextField
@@ -265,7 +275,7 @@ const AccountProfile = props => {
                 placeholder='(305) 555-1234'
               />
             </Grid>
-            <Grid
+            {/* <Grid
               item
               md={6}
               xs={12}
@@ -282,7 +292,7 @@ const AccountProfile = props => {
                 variant="outlined"
                 placeholder='you@email.com'
               />
-            </Grid>
+            </Grid> */}
             <Grid
               item
               md={12}
@@ -314,7 +324,7 @@ const AccountProfile = props => {
                 required
                 value={userState.values.city}
                 variant="outlined"
-                placeholder='Miami'
+                placeholder='(305) 555-1234'
               />
             </Grid>
             <Grid
@@ -331,7 +341,6 @@ const AccountProfile = props => {
                 required
                 value={userState.values.state}
                 variant="outlined"
-                placeholder='Florida'
               />
             </Grid>
             <Grid
